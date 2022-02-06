@@ -1,0 +1,10 @@
+{% extends "core/indexbase.html" %}              <!---inheriting the home base template--->
+{% block content %}
+{% if messages %}
+    {% for msg in messages %}
+        <div class="alert alert-{{message.tags}}">{{msg}}</div> 
+    {% endfor %}
+{% endif %}
+    <a href="{% url 'signup' %}"><button class="btn btn-secondary"  >Register</button></a>
+
+{% endblock content %}
