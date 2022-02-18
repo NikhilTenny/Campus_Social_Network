@@ -23,3 +23,9 @@ class SignupForm(UserCreationForm):
         model = CustomeUsers
         fields = ['username','email','first_name',
                   'last_name','department','year']
+
+
+#Student/Teacher login form
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)

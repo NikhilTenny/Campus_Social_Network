@@ -12,7 +12,3 @@ class TestUrls(TestCase):
         #Checks wheater the function(view) of the url is equeal to 'HomeView'
         self.assertEquals(resolve(url).func, HomeView)  #Resolve function get the details related to the url like func(view) arguments...
     
-    #Test signup view
-    def test_signup_url(self):
-        url = reverse('signup')
-        self.assertEquals(resolve(url).func, RegisterView)    
