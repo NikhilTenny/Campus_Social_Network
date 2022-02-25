@@ -1,17 +1,32 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-    </head>
-    <body>
-        <h1>Logged in as {{ user.first_name}}</h1>
-        <a href="{% url 'logout' %}"><button class="btn btn-warning">Log out</button></a>
-        
-        <script src="" async defer></script>
-    </body>
-</html>
+{% extends "core/base.html" %}
+{% block content %}
+<section class="mainitems " >
+    <div class="container-xxl  px-5 my-4">
+        <div class="row justify-content-sm-around ">
+            <div class="col-md-7">
+                {% for post in posts %}
+                <div class="post border border-5 p-3 my-3">
+                    <img class=" rounded-circle mr-2 mb-2" src="{{p_data.Profile_pic.url}}" alt="img not found" width="40"><span >{{ post.Author.username }}</span>
+                    <span><h2>{{post.Title}}</h2></span>
+                    <img class="img-thumbnail" src="{{ posts.Picture.url }}" alt="img not found">
+                    <span>{{ post.Content }}</span> <br>
+                    created: {{post.created}} <br>
+                    edited: {{post.edited}}
+                     
+                </div>
+                {% endfor %} 
+            </div>
+            <div class="col-md-4 bg-warning">
+                <div>
+                    df
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock content %}        
+  

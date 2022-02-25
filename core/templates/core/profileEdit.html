@@ -1,0 +1,41 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="wrapper bg-white mt-sm-5 ">
+    <h4 class="pb-4 border-bottom">Account Details</h4>
+    <form action="" method="POST" enctype='multipart/form-data'>
+        {% csrf_token %}
+    <div class="d-flex align-items-start py-3 border-bottom mb-4"> <img src="{{ p_data.Profile_pic.url }}" class="img" alt="">
+        <div class="pl-sm-4 pl-2" id="img-section"> <b>Profile Photo</b>
+            <br> {{profileform.Profile_pic}}
+        </div>
+    </div>
+    <div class="row py-2">
+        <div class="col-md-6"> <label for="firstname">First Name</label> {{userform.first_name}} </div>
+        <div class="col-md-6 pt-md-0 pt-3"> <label for="lastname">Last Name</label> {{userform.last_name}} </div>
+    </div>
+    <div class="row py-2">
+        <div class="col-md-6"> <label for="firstname">Bio</label> {{profileform.Bio}} </div>
+        <div class="col-md-6 pt-md-0 pt-3"> <label for="lastname">Address</label> {{profileform.Address}} </div>
+    </div>
+    <div class="row py-2">
+        <div class="col-md-6"> <label for="email">Email Address</label> {{userform.email}} </div>
+        <div class="col-md-6 pt-md-0 pt-3"> <label for="phone">Department</label> {{profileform.Dept}} </div>
+    </div>
+    <div class="row py-2">
+        <div class="col-md-6"> <label for="firstname">Designation</label> {{profileform.Designation}} </div>
+        <div class="col-md-6 pt-md-0 pt-3"> <label for="lastname">Phone Number</label> {{profileform.phone_number}} </div>
+    </div>
+        <div class="py-3 pb-4 border-bottom"> <button type="submit" class="btn btn-primary mr-3">Save Changes</button> <a href="{% url 'userprofile' %}" class="border btn btn-outline-secondary">Cancel</a> </div>
+    </form>
+        <div class="d-sm-flex align-items-center pt-3" id="deactivate">
+            <div> <b>Deactivate your account</b>
+                <p>Details about your account and password</p>
+            </div>
+            <div class="ml-auto"> <button class="btn danger">Deactivate</button> </div>
+        </div>
+    </div>
+</div>
+                                <script type='text/javascript' src='https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js'></script>
+
+{% endblock content %}

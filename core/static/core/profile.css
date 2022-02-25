@@ -1,0 +1,23 @@
+.profile-header {
+    transform: translateY(6rem);
+  
+}
+
+#marino {
+    color: red;
+    background: black;
+}
+body {
+    background: #654ea3;
+
+    background: -webkit-linear-gradient(to right, #654ea3, #eaafc8);
+    background: linear-gradient(to right, #654ea3, #eaafc8);
+    min-height: 100vh;
+}
+hr {
+    /* margin-top: 1rem;
+    margin-bottom: 1rem; */
+    border: 0;
+    border-top: 1px  solid red
+    
+  }

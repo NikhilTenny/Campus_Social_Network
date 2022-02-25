@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="{% static 'core/profile.css' %}">
+        <link rel="stylesheet" href="{% static 'core/profileedit.css' %}">
+    </head>
+    <body> 
+        <section class="container-xxl">
+            <nav class="navbar navbar-expand-lg bg-secondary shadow-lg pt-1 t pb-1">
+                <div class="container-lg">
+                    <a href="{% url 'userhome' %}" class="navbar-brand">
+                        <span class="text-light font-weight-bolder"> 
+                            
+                            <h2><i class="bi bi-book ">&nbsp&nbsp</i>CMS</h2></span>
+                    </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon "></span>
+                        </button>
+                        <div class="collapse navbar-collapse justify-content-end align-items-center" id="main-nav">
+                            <ul class="navbar-nav text-success">
+                                <li class="nav-item">
+                                    <a href="" class="nav-link px-3 text-light fw-normal">Notice Board</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="" class="nav-link px-3 text-light fw-normal">Placement Cell</a>
+                                </li>
+                                {% if user.is_student %}
+                                    <li class="nav-item">
+                                        <a href="" class="nav-link px-3 text-light fw-normal">Teachers</a>
+                                    </li> 
+                                {% elif user.is_teacher %}
+                                    <li class="nav-item">
+                                        <a href="" class="nav-link px-3 text-light fw-normal">Students</a>
+                                    </li>
+                                {% endif %}
+                                <li class="nav-item">
+                                    <a href="" class="nav-link px-3 text-light fw-normal">Personal</a>
+                                </li>
+                                
+                                <li class="nav-item">
+                                    
+                                    <div class="dropdown">
+                                        <button class="nav-link px-3  text-light  btn " id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false"></i>Notifications <i class="bi bi-app-indicator text-danger"></i></button>
+                                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                                        <li><a class="dropdown-item" href="#">Messages</a></li>
+                                        <li><a class="dropdown-item" href="#">Discussion Rooms</a></li>
+                                        <li><a class="dropdown-item" href="#">Friend Request</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <div class="dropdown">
+                                        <button href="" class="nav-link px-3 fw-normal text-light  btn dropdown-toggle" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <!-- <img src="" alt="" class="img-thumbnail rounded-circle"> -->
+                                                <i class="bi bi-person-circle "></i>&nbsp{{ user.username }}{{ request.user.Profile.id }}
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                                            <li><a class="dropdown-item " href="{% url 'userprofile' %}">Profile</a></li>
+                                            <li><a class="dropdown-item " href="{% url 'logout' %}">logout</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div> 
+                </div>
+            
+            </nav>
+        </section>
+        {% block content %} {% endblock %}
+        
+        
+        
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
