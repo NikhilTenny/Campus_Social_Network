@@ -3,15 +3,26 @@
   
 }
 
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0; 
+ }
+
+#backgroundpart {
+    background-color: #537895;
+background-image: linear-gradient(315deg, #537895 0%, #09203f 74%);
+}
+
 #marino {
     color: red;
-    background: black;
+    /* background: black; */
+    
 }
 body {
-    background: #654ea3;
+    /* background: #654ea3; */
 
-    background: -webkit-linear-gradient(to right, #654ea3, #eaafc8);
-    background: linear-gradient(to right, #654ea3, #eaafc8);
+    /* background: -webkit-linear-gradient(to right, #654ea3, #eaafc8); */
+    /* background: linear-gradient(to right, #654ea3, #eaafc8); */
     min-height: 100vh;
 }
 hr {

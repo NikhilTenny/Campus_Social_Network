@@ -2,21 +2,23 @@
 
 {% block content %}
 <div class="row py-3 px-4">
-    <div class="col-xl-10 col-md-6 col-sm-10 mx-auto">
-
+    <div class="col-xl-8 col-md-6 col-sm-10 mx-auto">
         <!-- Profile widget -->
-        <div class="bg-white shadow rounded overflow-hidden">
-            <div class="px-4 pt-0 pb-4 bg-dark">
+        <div class="bg-white shadow rounded overflow-hidden mt-2">
+            <div id="backgroundpart" class="px-4 pt-0 pb-4 bg-dark">
                 <div class="media align-items-end profile-header">
                     <div class="profile mr-3 rounded-circle">
                         
-                        <img src="{{ profile.Profile_pic.url }}" alt="..." width="130" class="rounded-circle shadow-lg mb-3 ">
-                        <a href="{% url 'editprofile' %}" class="btn btn-primary   btn-block text-light">Edit profile</a>
-                        
+                        <img src="{{ profile.Profile_pic.url }}" alt="..." style="width: 150px;height: 150px;" class=" img rounded-circle shadow-lg mb-3 ">
+                        {% if edit %}
+                        <a href="{% url 'editprofile' user.username %}" class="btn btn-outline-primary   btn-block text-primary">Edit profile</a>
+                        {% else %}
+                        <a href="#" class="btn btn-primary   btn-block text-light">Add Friend</a>   
+                        {% endif %}                     
                     </div>
                     <div class="media-body mb-5 text-white">
-                        <h4 class="mt-0 mb-1 text-capitalize">{{ user.first_name}} {{user.last_name}}</h4>
-                        <p class="small mb-5"> <i class="fa fa-map-marker mr-2"></i>{{user.email}}</p>
+                        <h4 class="mt-0 mb-1 text-capitalize">{{ user_obj.first_name}} {{user_obj.last_name}}</h4>
+                        <p class="small mb-5"> <i class="fa fa-map-marker mr-2"></i>{{user_obj.email}}</p>
                     </div>
                 </div>
             </div>
@@ -25,10 +27,10 @@
             <div class=" p-4 d-flex justify-content-end text-center">
                 <ul class="list-inline mb-0">
                     <li class="list-inline-item">
-                        <h5 class="font-weight-bold mb-0 d-block text-primary">241</h5> <i class="fa fa-picture-o mr-1"></i>Posts
+                        <h5 class="font-weight-bold mb-0 d-block text-primary">{{posts.count}}</h5> <i class="fa fa-picture-o mr-1"></i>Posts
                     </li>
                     <li class="list-inline-item">
-                        <h5 class="font-weight-bold mb-0 d-block text-primary">55</h5><i class="fa fa-user-circle-o mr-1"></i>Friends
+                        <h5 class="font-weight-bold mb-0 d-block text-primary">{{profile.Friends}}</h5><i class="fa fa-user-circle-o mr-1"></i>Friends
                     </li>
                 </ul>
             </div>
@@ -36,18 +38,30 @@
             <div class="py-1 px-4">
                 <div class="d-flex align-items-center justify-content-between mb-3">
                  
-                <div class="py-2 ">
-                    <h5 class="mb-3">Recent posts</h5>
-                    {% for post in posts %}
-                    <div class=" my-3 p-3 bg-light rounded shadow-sm">
-                        <h3 class="pb-3"> {{post.Title}} </h3>
-                        <p class="font-italic mb-0">{{ post.Content }}</p>
+                    <div class="py-2 ">
+                        <h5 class="mb-3">Recent posts</h5>
+                        {% for post in posts %}
+                        <div class=" my-3 p-3 bg-light rounded shadow-sm">
+                            <h3 class="pb-3"> {{post.Title}} </h3>
+                            <p class="font-italic mb-0">{{ post.Content }}</p>
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
+                </div>
+            </div><!-- End profile widget -->
+        </div>
+    </div>
+    <div class=" col-4 mx-auto mt-2 rounded ">
+        <h2 class="text-bold  pl-3 mb-3">Friends </h2>
+            <div class="card p-2 mb-2">
+                <div class="media"> <img src="https://imgur.com/ZnxJ2SY.png" class="mr-3">
+                    <div class="media-body">
+                        <h5 class="mt-2 mb-0">Anna Gibson</h5>
+                        <div class="d-flex flex-row justify-content-between align-text-center"> <small class="text-muted">Creator</small> <button id="btn-primary" class="btn btn-primary mr-2">Follow</button> </div>
+                    </div>
                 </div>
             </div>
-        </div><!-- End profile widget -->
-
+            
     </div>
 </div>
 {% endblock content %}

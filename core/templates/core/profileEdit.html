@@ -26,7 +26,7 @@
         <div class="col-md-6"> <label for="firstname">Designation</label> {{profileform.Designation}} </div>
         <div class="col-md-6 pt-md-0 pt-3"> <label for="lastname">Phone Number</label> {{profileform.phone_number}} </div>
     </div>
-        <div class="py-3 pb-4 border-bottom"> <button type="submit" class="btn btn-primary mr-3">Save Changes</button> <a href="{% url 'userprofile' %}" class="border btn btn-outline-secondary">Cancel</a> </div>
+        <div class="py-3 pb-4 border-bottom"> <button type="submit" class="btn btn-primary mr-3">Save Changes</button> <a href="{% url 'userprofile' user.username %}" class="border btn btn-outline-secondary">Cancel</a> </div>
     </form>
         <div class="d-sm-flex align-items-center pt-3" id="deactivate">
             <div> <b>Deactivate your account</b>

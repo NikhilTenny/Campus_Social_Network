@@ -1,0 +1,29 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="row d-flex justify-content-center ">
+    <div class="col-9 mt-3">
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+        {%for User,profile in Users%}
+                <tr>
+                    <td><img class="img rounded-circle mr-3" src="{{ profile.Profile_pic.url }}" alt="no img" style="width: 40px;height: 40px;">{{User.first_name }} {{User.last_name}}</td>
+                    <td>{{User.email}}</td>
+                    <td>{{profile.phone_number}}</td>
+                    <td><a class="btn btn-primary" href="{% url 'userprofile' User.username %}">View</a></td>
+                </tr>
+        {% endfor %}
+                
+            </tbody>
+        </table>
+
+    </div>
+</div>
+{% endblock content %}

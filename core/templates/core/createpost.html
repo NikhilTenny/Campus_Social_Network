@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}
+{% block content %}
+{% if messages %}
+    {% for msg in messages %}
+        <div class="alert alert-{{ msg.tags }}">
+            {{msg}}
+        </div>
+    {% endfor %}
+{% endif %}
+<h2>{{ posttype }}</h2>
+<form action="" method = "POST">
+    {% csrf_token %}
+    {{form}}
+    <button class="btn btn-primary" type="submit">Create</button>
+</form>
+
+{% endblock content %}

@@ -15,6 +15,18 @@ class CustomeUsers(AbstractUser):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     
+    # Returns the list of teachers
+    @classmethod
+    def get_Teachers(self):                             
+        list = self.objects.filter(is_teacher = True)
+        return list
+
+    # Returns the list of students
+    @classmethod
+    def get_Students(self):                             
+        list = self.objects.filter(is_student = True)
+        return list
+
     def save(self,*args,**kwargs):
         #checking whether there exist a profile for the user
         try:    
@@ -31,11 +43,6 @@ class CustomeUsers(AbstractUser):
             p_obj.save()
         else:
             super().save(*args,**kwargs)
-
-            
-  
-        
-                        
 
     def __str__(self):
         return self.username
@@ -66,7 +73,6 @@ class Profile(models.Model):
     Friends = models.CharField(max_length=50, default = 0)
     Posts = models.CharField(max_length=50, default = 0)
     
-
     #Set a default profile pic when a profil is saved
     def save(self, *args, **kwargs):
         if self.Profile_pic == 'default.jpg':
@@ -83,7 +89,7 @@ class Profile(models.Model):
             resize = (400,400)                      
             img.thumbnail(resize)                           #resize the image to with smaller dimensions
             img.save(self.Profile_pic.path)
-
+    
     def __str__(self):
         return f'{self.User.username} Profile' 
            

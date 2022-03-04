@@ -1,0 +1,36 @@
+body {
+    background-color: #d9d9d9;
+
+}
+.navbar {
+    background-color: #1d2d44;
+}
+
+#timeline_list {
+    background-color: #f8f9fa;
+}
+/* Friends list in profile page */
+.card {
+    width: 400px;
+    border: none;
+    border-radius: 20px;
+
+}
+
+#btn-primary {
+    border: none;
+    border-radius: 8px;
+    width: 80px;
+    color: #DFEFFF;
+    transform: translateY(-22px);
+    background-color: #5778F9 !important
+}
+
+#btn-primary:focus {
+    box-shadow: none;
+    outline: none
+}
+
+#btn-primary:hover {
+    background-color: #007bff !important
+}

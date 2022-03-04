@@ -2,25 +2,39 @@
 {% block content %}
 <section class="mainitems " >
     <div class="container-xxl  px-5 my-4">
-        <div class="row justify-content-sm-around ">
-            <div class="col-md-7">
+        <div class="row mt-3">
+            <div class="col-md-7 mt-3">
+                <a href = "{% url 'createpost' %}"class=""><button class="btn btn-outline-success btn-lg col-12 mb-1 mt-1">Create Post</button></a>
                 {% for post in posts %}
-                <div class="post border border-5 p-3 my-3">
-                    <img class=" rounded-circle mr-2 mb-2" src="{{p_data.Profile_pic.url}}" alt="img not found" width="40"><span >{{ post.Author.username }}</span>
+                <div class="post border rounded shadow-md border-5 p-3 my-3 " id="timeline_list">
+                    <div class="row">
+                        <div class="col-10"><img class=" img rounded-circle mr-2 mb-2" src="{{post.Author.profile.Profile_pic.url}}" style="width:50px;height:50px;" alt="img not found" width="40" height="40"><a href="{% url  'userprofile' post.Author.username %}" class="text-dark fs-4">{{ post.Author.username }}</a></div>
+                        <div class="ml-5"><a href="{% url 'postdetail' post.slug %}" class="btn btn-primary">View</a></div>
+                    </div>
                     <span><h2>{{post.Title}}</h2></span>
-                    <img class="img-thumbnail" src="{{ posts.Picture.url }}" alt="img not found">
-                    <span>{{ post.Content }}</span> <br>
-                    created: {{post.created}} <br>
-                    edited: {{post.edited}}
+                    {% if post.Picture %}
+                    <img class="img-fluid" src="{{ post.Picture.url }}" alt="img not found">
+                    {% endif %}
+                    <span class="my-5">{{ post.Content }}</span> <br>
+                    <span class="text-info ">  {{post.created | date:"d - F - Y"}}</span> <br>
+
+                    
                      
                 </div>
                 {% endfor %} 
             </div>
-            <div class="col-md-4 bg-warning">
-                <div>
-                    df
-                </div>
-
+            <div class="col-md-4 mt-3 ">
+                <div class="content-section">
+                    <h3>Our Sidebar</h3>
+                    <p class='text-muted'>You can put any information here you'd like.
+                      <ul class="list-group">
+                        <li class="list-group-item list-group-item-light">Latest Posts</li>
+                        <li class="list-group-item list-group-item-light">Announcements</li>
+                        <li class="list-group-item list-group-item-light">Calendars</li>
+                        <li class="list-group-item list-group-item-light">etc</li>
+                      </ul>
+                    </p>
+                  </div>
             </div>
         </div>
     </div>

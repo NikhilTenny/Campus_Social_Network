@@ -1,5 +1,6 @@
 
 from django.db import models
+from django.urls import reverse
 from users.models import CustomeUsers
 from django.utils.text import slugify
 
@@ -16,6 +17,8 @@ class Posts(models.Model):
     edited = models.DateTimeField(auto_now=True)
     slug = models.SlugField(unique=True,null=True)
 
+    def get_absolute_url(self):
+        return reverse('postdetail',kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.Title) 

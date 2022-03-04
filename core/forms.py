@@ -1,7 +1,7 @@
 from dataclasses import fields
-from pyexpat import model
 from django import forms
 from users.models import CustomeUsers, Profile
+from .models import Posts
 
 class UserEditForm(forms.ModelForm):
     first_name  = forms.CharField(widget=forms.TextInput(
@@ -37,6 +37,13 @@ class ProfileEditForm(forms.ModelForm):
         'class':'bg-light form-control'
         }),
         required=False)
+    Dept = forms.CharField(widget=forms.Select(
+        attrs={
+        'class':'bg-light form-control',
+        
+
+        }, choices=Profile.departments),
+        required=False)    
     phone_number = forms.CharField(widget=forms.TextInput(
         attrs={
         'class':'bg-light form-control'
@@ -46,3 +53,16 @@ class ProfileEditForm(forms.ModelForm):
         model = Profile
         fields = ['Profile_pic','Bio','Designation','Dept','Address','phone_number']
 
+
+class notice(forms.ModelForm):
+    Title = forms.CharField(widget=forms.TextInput(
+        attrs={
+        'class':'bg-light form-control'
+        }))
+    Content = forms.CharField(widget=forms.Textarea(attrs={
+        'rows': 2, 
+        'cols': 30,
+        'class':'bg-light form-control'}))
+    class Meta:
+        model = Posts
+        fields = ['Title', 'Content']
