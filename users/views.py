@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate,login
 from django.contrib import messages
 from .models import Profile
 from core.models import Posts
+from Admin_area import views as adminviews
 
 #Home page
 def HomeView(request):
@@ -24,10 +25,14 @@ def LoginView(request):
             if user is not None:
                 login(request,user)
                 profile = Profile(User = request.user)
+                if user.is_superuser:
+                    return redirect('admin-dashboard')
+                    
                 context = {
                     'posts':Posts.objects.filter(is_timeline = True).order_by('-created'), #List of posts that is to be displayed in the user home page
                     'p_data':profile,
                     }
+                
                 return render(request,'core/home.html',context)
                 
             else:

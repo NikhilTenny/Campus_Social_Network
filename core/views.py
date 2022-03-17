@@ -133,7 +133,7 @@ class StudentsListView(LoginRequiredMixin, ListView):
     model = CustomeUsers
     context_object_name = 'student'
     template_name = 'core/userlist.html'
-
+ 
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         students = list(CustomeUsers.get_Students())

@@ -18,31 +18,31 @@ class CustomeUsers(AbstractUser):
     # Returns the list of teachers
     @classmethod
     def get_Teachers(self):                             
-        list = self.objects.filter(is_teacher = True)
+        list = self.objects.filter(is_teacher = True, is_student = False)
         return list
 
     # Returns the list of students
     @classmethod
     def get_Students(self):                             
-        list = self.objects.filter(is_student = True)
+        list = self.objects.filter(is_student = True, is_teacher = False)
         return list
-
-    def save(self,*args,**kwargs):
-        #checking whether there exist a profile for the user
-        try:    
-            p_count = Profile.objects.get(User = self.id)
-        except:    
-            p_count = False
-        #If there is no profile for the user create one. This happens at the time of registration 
-        if  not p_count:
-            self.password = make_password(self.password)        #Hashing the password before storing
-            #Create a new Profile instance associated with the registered user
-            p_obj = Profile()
-            p_obj.User = self
-            super().save(*args,**kwargs)
-            p_obj.save()
-        else:
-            super().save(*args,**kwargs)
+    #This save method is commented while building student registration in admin
+    # def save(self,*args,**kwargs):
+    #     #checking whether there exist a profile for the user
+    #     try:    
+    #         p_count = Profile.objects.get(User = self.id)
+    #     except:    
+    #         p_count = False
+    #     #If there is no profile for the user create one. This happens at the time of registration 
+    #     if  not p_count:
+    #         self.password = make_password(self.password)        #Hashing the password before storing
+    #         #Create a new Profile instance associated with the registered user
+    #         p_obj = Profile()
+    #         p_obj.User = self
+    #         super().save(*args,**kwargs)
+    #         p_obj.save()
+    #     else:
+    #         super().save(*args,**kwargs)
 
     def __str__(self):
         return self.username

@@ -1,0 +1,136 @@
+{% extends 'Admin_area/base.html' %}
+{% block Admincontent%}
+<div class="pagetitle">
+    <h1>Dashboard</h1>
+  </div> 
+  <section class="section dashboard">
+      <div class="row">
+          <!-- Main Area -->
+          <div class="col-lg-8">
+              <div class="row">
+                  <div class="col-xxl-4 col-md-6">
+                      <div class="card info-card sales-card">
+                        <div class="card-body">
+                          <h5 class="card-title">Users</h5>
+        
+                          <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                              <i class="bi bi-cart"></i>
+                            </div>
+                            <div class="ps-3">
+                              <h6>{{ totalUsers }}</h6>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  </div><!-- End Users Card -->
+                  <div class="col-xxl-4 col-md-6">
+                      <div class="card  info-card sales-card">
+                        <div class="card-body">
+                          <h5 class="card-title">Discussion Rooms</h5>
+        
+                          <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                              <i class="bi bi-cart"></i>
+                            </div>
+                            <div class="ps-3">
+                              <h6>14</h6>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  </div><!-- End Discussion Rooms Card -->
+                  <div class="col-xxl-4 col-md-6">
+                      <div class="card info-card sales-card ">
+                        <div class="card-body ">
+                          <h5 class="card-title">Posts</h5>        
+                          <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                              <i class="bi bi-cart"></i>
+                            </div>
+                            <div class="ps-3">
+                              <h6>{{  totalPosts }}</h6>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  </div><!-- End Posts Card -->
+
+                  <div class="card col-12 ">
+                      <div class="card-body">
+                        <h5 class="card-title">Recent Posts</h5>
+          
+                        <!-- Table with hoverable rows -->
+                        <table class="table table-hover datatable">
+                          <thead>
+                            <tr>
+                                <th scope="col">Author</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Date</th>
+                            </tr>                          
+                          </thead>
+                          <tbody>
+                              {% for post in posts %}
+                            <tr>
+                              <td>{{ post.Author.first_name }}&nbsp{{ post.Author.last_name }}</td>
+                              <td>{{post.Title}}</td>
+                                {%if post.is_timeline%}
+                                <td my-1> <span class="badge rounded-pill bg-info"> Timeline </span></td> 
+                                {% elif post.is_p_cell%}
+                                <td my-1> <span class="badge rounded-pill bg-warning"> Placement </span></td> 
+                                {% else%}
+                                <td my-1> <span class="badge rounded-pill bg-secondary"> Notice </span></td>
+                                {% endif %}
+                                  
+                              
+                              <td>{{post.created | date:'d-m-Y'}}</td>
+                              <td><a href="{% url  'postview' post.slug  %}" class="btn btn-outline-primary btn-sm">View</a></td>
+                            </tr>
+                              {% endfor %}
+                            
+                            
+                          </tbody>
+                        </table>
+                        <!-- End Table with hoverable rows -->
+                        {% if pcount %}   
+                        
+                        {% endif %}
+                      </div>
+                    </div>
+
+
+
+              </div>
+          </div>  
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Teachers</h5>
+                    {% for tr,prof in teachers %}
+               
+                    <div class="card p-2 mb-2">
+                      <div class="media row"> 
+                        
+                        <img src="{{ prof.Profile_pic.url }}" class="mr-3 col-3 rounded-circle" 
+                                style="width: 70px; height: 50px;">
+                        <div class="media-body col-5">
+                              <h5 class="mt-2 mb-0 ">{{ tr.first_name }}</h5>       
+                                                     
+                        </div>
+                        <div class="col-2">
+                          <button id="btn-primary" class="btn btn-primary btn-sm m-2">Follow</button>
+                        </div>
+                      </div>
+                  </div>
+                  {% endfor %}
+                  
+                
+                </div>
+
+            </div>
+        </div>
+      </div><!-- Main Area End -->
+  </section>
+{% endblock Admincontent %}

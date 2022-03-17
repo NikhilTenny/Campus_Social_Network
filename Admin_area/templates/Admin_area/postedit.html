@@ -1,0 +1,24 @@
+{% extends 'Admin_area/base.html' %}
+{% block Admincontent%}
+<div class="pagetitle">
+    <h1>{{page_heading}}</h1>
+</div> 
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-8 m-2 p-4 shadow-sm" style="background-color: #ffffff;">
+        <form action="" method="post" >
+            {% csrf_token %}
+            <div class="col-12 mb-3 mt-2">
+                <label for="inputNanme4" class="form-label fw-bold lead">Title</label>
+                {{form.Title}}
+            </div>
+            <label for="inputNanme4" class="form-label lead fw-bold mt-2">Content</label>
+            <div  >
+                {{form.Content}}
+            </div>
+            <button class="btn btn-outline-success py-2 px-4 my-4" type="submit">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock Admincontent%}

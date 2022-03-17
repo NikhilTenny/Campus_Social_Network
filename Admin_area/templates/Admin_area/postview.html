@@ -1,0 +1,51 @@
+{% extends 'Admin_area/base.html' %}
+{% block Admincontent%}
+
+<div class="row d-flex justify-content-center">
+    <div class="col-lg-9 col-md-10 m-2 ">
+        
+            <div class="card p-3 mb-2">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="ms-2 c-details">
+                            <h5 class="mb-0">{{post.Author.first_name}}&nbsp{{post.Author.last_name}}</h5>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="dropdown fs-4">
+                            <i class="bi bi-three-dots-vertical " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                             
+                            </i>
+                            <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="{% url 'postedit' post.slug %}">Edit</a></li>
+                                <li> <form action="{% url 'postdelete' post.slug %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="submit" value = 'Delete' class="dropdown-item" onclick="return confirm('Are you sure?');">
+                                </form> <!-- Send a post request to DeleteView to delete the post -->
+                                </li>
+
+
+                                  <!-- <a class="dropdown-item" href="{% url 'postdelete' post.slug %}">Delete</a></li> -->
+
+                            </ul>
+                          </div>
+                    </div>
+                          
+                </div>
+                <div class="mt-3">
+                    <h2 class="">{{post.Title}}</h2>
+                    {% if post.Picture %}
+                    <img src="{{ post.Picture.url }}" class="img-fluid mb-3" alt="">
+                    {% endif %}
+                    <p class="text-lead fs-5">{{ post.Content }}</p>
+                    <div class="mt-3">
+                        <div class="mt-3 "> <span >Created:&nbsp&nbsp</span>{{post.created | date:'d-M-Y'}} </div>
+                        <div class=" "> <span >Edited:&nbsp&nbsp</span>{{post.edited | date:'d-M-Y'}} </div>
+                    </div>
+                </div>
+            </div>
+    
+    </div>
+</div>
+    
+{% endblock Admincontent%}

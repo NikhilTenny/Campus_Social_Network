@@ -3,6 +3,7 @@ from django import forms
 from users.models import CustomeUsers, Profile
 from .models import Posts
 
+# Form with feilds of CustomeUser model 
 class UserEditForm(forms.ModelForm):
     first_name  = forms.CharField(widget=forms.TextInput(
         attrs={
@@ -20,6 +21,7 @@ class UserEditForm(forms.ModelForm):
         model = CustomeUsers
         fields  = ['first_name', 'email', 'last_name']
 
+# Form with feilds of Profile model
 class ProfileEditForm(forms.ModelForm):
     Bio = forms.CharField(widget=forms.Textarea(attrs={
         'rows': 2, 
@@ -39,10 +41,8 @@ class ProfileEditForm(forms.ModelForm):
         required=False)
     Dept = forms.CharField(widget=forms.Select(
         attrs={
-        'class':'bg-light form-control',
-        
-
-        }, choices=Profile.departments),
+        'class':'bg-light form-control',      
+        }, choices=Profile.departments ),
         required=False)    
     phone_number = forms.CharField(widget=forms.TextInput(
         attrs={

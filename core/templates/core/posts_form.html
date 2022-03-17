@@ -9,7 +9,7 @@
 {% endif %}
 <form action="" method = "POST">
     {% csrf_token %}
-    {{form}}
+    {{form.Title}}
     <button class="btn btn-primary" type="submit">Create</button>
 </form>
 

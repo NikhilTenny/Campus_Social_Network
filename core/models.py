@@ -24,5 +24,27 @@ class Posts(models.Model):
         self.slug = slugify(self.Title) 
         super().save(*args, **kwargs)
 
+    # Return all the Notice Board posts    
+    @classmethod
+    def get_Notice(self):
+        posts = self.objects.filter(is_notice = True, is_p_cell = False, is_timeline = False)
+        return posts
+
+    # Return all the Timeline posts    
+    @classmethod
+    def get_Timeline(self):
+        posts = self.objects.filter(is_notice = False, is_p_cell = False, is_timeline = True)
+        return posts
+
+    # Return all the Placement posts    
+    @classmethod
+    def get_Placement(self):
+        posts = self.objects.filter(is_notice = False, is_p_cell = True, is_timeline = False)
+        return posts    
+
+
     def __str__(self):
         return self.Title
+
+    class Meta:
+        ordering = ['-created']    

@@ -1,0 +1,39 @@
+{% extends 'Admin_area/base.html' %}
+{% block Admincontent%}
+<div class="pagetitle">
+    <h1>{{page_heading}}</h1>
+</div> 
+<!-- Table to display the list of posts -->
+<div class="p-3 shadow-lg mt-3">
+    <table class="table datatable">
+        <thead>
+        <tr>
+            <th scope="col">Author</th>
+            <th scope="col">Title</th>
+            
+            <th scope="col">Date</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            
+        </tr>
+        </thead>
+        <tbody>
+            {% for post in posts %}
+        <tr>    
+            <td>{{ post.Author.first_name }}&nbsp {{ post.Author.last_name }}</td>
+            <td>{{ post.Title }}</td>
+            
+            <td>{{ post.created | date:'d-m-Y' }}</td>
+            <td><a href="{% url 'postedit' post.slug %}" class="btn btn-warning btn-sm" >Edit</a></td>
+            <td><a href="{% url 'postview' post.slug %}" class="btn btn-primary btn-sm" >View</a></td>
+            <td><form action="{% url 'postdelete' post.slug %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value = 'Delete' class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure?');">
+            </form></td> <!-- Send a post request to DeleteView to delete the post -->
+        </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock Admincontent%}

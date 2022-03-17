@@ -27,5 +27,13 @@ class SignupForm(UserCreationForm):
 
 #Student/Teacher login form
 class LoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={
+        'class':'form-control',                 #Specify the class name of the input element in the template
+        'id':'yourUsername' 
+        }))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={
+        'class':'form-control',                 #Specify the class name of the input element in the template
+        'id':'yourPassword' 
+        }))
