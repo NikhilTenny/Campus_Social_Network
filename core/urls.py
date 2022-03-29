@@ -14,7 +14,7 @@ urlpatterns = [
     path('home/createpost', PostCreateView.as_view(), name='createpost'),           # Create a post
     path('home/post/<slug:slug>', PostDetailView.as_view(), name='postdetail'),     # Detail view of a post
     path('home/post/<slug:slug>/edit', PostEditView.as_view(), name='postedit'),    # Edit a post
-    path('home/post/<slug:slug>/delete', PostDeleteView.as_view(), name='postdelete'),    # Edit a post
+    path('home/post/<slug:slug>/delete', PostDeleteView.as_view(), name='postdelete'),    # Edit a post 
     
     path('home/teachers', TeachersListView.as_view(), name='teacherslist'),          # List of all teachers
     path('home/students', StudentsListView.as_view(), name='studentslist'),          # List of all students

@@ -57,12 +57,15 @@ class ProfileEditForm(forms.ModelForm):
 class notice(forms.ModelForm):
     Title = forms.CharField(widget=forms.TextInput(
         attrs={
-        'class':'bg-light form-control'
+        'class':'form-control',
+        'id': 'inputNanme4',
         }))
     Content = forms.CharField(widget=forms.Textarea(attrs={
-        'rows': 2, 
+        'rows': 4, 
         'cols': 30,
-        'class':'bg-light form-control'}))
+        'class':'form-control',
+        }))
+           
     class Meta:
         model = Posts
-        fields = ['Title', 'Content']
+        fields = ['Title', 'Content','Picture']

@@ -44,6 +44,13 @@ class CustomeUsers(AbstractUser):
     #     else:
     #         super().save(*args,**kwargs)
 
+    # Delete the profile of th user when the user is deleted
+    def delete(self, *args, **kwargs):
+        pro_inst = Profile.objects.get(User=self)
+        pro_inst.delete()
+        super(CustomeUsers,self).delete(*args, **kwargs)
+
+
     def __str__(self):
         return self.username
 

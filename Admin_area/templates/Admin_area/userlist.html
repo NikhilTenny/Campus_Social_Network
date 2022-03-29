@@ -1,0 +1,36 @@
+{% extends 'Admin_area/base.html' %}
+{% block Admincontent%}
+<div class="pagetitle">
+    <h1>{{heading}}</h1>
+</div> 
+<div class="p-3 shadow-lg mt-3">
+    <table class="table datatable">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th> 
+            <th scope="col">Department</th>
+            <th scope="col"></th>
+     
+            
+        </tr>
+        </thead>
+        <tbody>
+            {% for user,profile in Users %}
+        <tr>    
+            <td>{{ user.first_name }}&nbsp {{ user.last_name }}</td>
+            <td>{{ user.username }}</td>          
+            <td>{{ user.email }}</td>
+            <td>{{ profile.Dept }}</td>
+            <td>
+               <a href="{% url 'userdelete' user.username %}"> 
+                   <button class="btn btn-outline-danger btn-sm">Remove</button>
+                </a>
+            </td> 
+        </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock Admincontent%}

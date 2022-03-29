@@ -1,13 +1,19 @@
-from msilib.schema import ListView
-from pipes import Template
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.views import View
-from django.views.generic import TemplateView, ListView, DetailView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic.list import ListView
+from django.views.generic import (TemplateView, ListView, 
+        DetailView, UpdateView, 
+        DeleteView, CreateView)
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from core.models import Posts
+from django.contrib import messages
 from users.models import CustomeUsers,Profile
-from .forms import PostEditForm, RegisterStudentProfileForm, RegisterCustomeUserForm
+from .forms import (
+    PostEditForm, RegisterStudentProfileForm,
+    RegisterCustomeUserForm, RegisterTeacherProfileForm
+    )
+from core.forms import notice    
 from django.contrib.auth.hashers import make_password
 
 
@@ -76,40 +82,146 @@ class PostEditView(UpdateView, LoginRequiredMixin):
 
     # To redirect to post view page after saving the edited post
     def get_success_url(self):
-        viewname = 'postview'
+        viewname = 'adminpostview'
         return reverse(viewname, kwargs ={'slug':self.object.slug})
 
 # View to Remove a post
-class PostDeleteView(DeleteView, LoginRequiredMixin):
+class PostDeleteView(DeleteView, LoginRequiredMixin, SuccessMessageMixin):
     model = Posts
-    
+    success_message = "Post Deleted Successfully"
     #To specify the url to specify after successfull deletion of the post
     def get_success_url(self):
+        messages.success(self.request, self.success_message)
         return reverse('admin-dashboard')
+    def delete(self, request, *args, **kwargs):
+        
+        return super(PostDeleteView, self).delete(request, *args, **kwargs)    
 
+# View to Register a student
 def StudentCreateview(request):
     if request.method == 'POST':
         userForm = RegisterCustomeUserForm(request.POST)
         profileForm = RegisterStudentProfileForm(request.POST) 
         if userForm.is_valid() and profileForm.is_valid():
             passw = make_password('fortesting')   # Making hash of password
-            userObj = userForm.save(False)
+            # Getting an instance of the user, but this is not committed to the database
+            userObj = userForm.save(False)        
             userObj.password = passw
             userObj.is_student = True
             userObj.save()
             profileObj = profileForm.save(False)
             profileObj.User = userObj
             profileObj.save()
+            messages.success(request, "Student Registration Successful")
             return redirect('admin-dashboard')
+    # If not a post request then return the page with blank form            
     userForm = RegisterCustomeUserForm()
     profileForm = RegisterStudentProfileForm()
     context = {
         'uform': userForm,
         'pform': profileForm
-    }    
-
+    }   
     return render(request,'Admin_area/stureg.html',context)
 
+# To register a Teacher
+def TeacherCreateView(request):
+    if request.method == 'POST':
+        userForm = RegisterCustomeUserForm(request.POST)
+        profileForm = RegisterTeacherProfileForm(request.POST) 
+        if userForm.is_valid() and profileForm.is_valid():
+            passw = make_password('fortesting')   # Making hash of password
+            # Getting an instance of the user, but this is not committed to the database
+            userObj = userForm.save(False)        
+            userObj.password = passw
+            userObj.is_teacher = True
+            userObj.save()
+            profileObj = profileForm.save(False)
+            profileObj.User = userObj
+            profileObj.save()
+            return redirect('admin-dashboard')
+    # If not a post request then return the page with blank form            
+    userForm = RegisterCustomeUserForm()
+    profileForm = RegisterTeacherProfileForm()
+    context = {
+        'uform': userForm,
+        'pform': profileForm
+    }   
+    return render(request,'Admin_area/teacherreg.html',context)
+
+# Show the list of all students    
+class StudentListView(ListView, LoginRequiredMixin):
+    model = CustomeUsers
+    template_name = 'Admin_area/userlist.html'
     
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        students = list(CustomeUsers.get_Students())    # Getting all the students
+        # Getting profiles of the students
+        t_profiles = list(Profile.objects.filter(User__in=students))    
+        context['Users'] = zip(students, t_profiles)  
+        context['heading'] = "Students List"
+        # This variable is used to identity that this is a 
+        # student list in the template
+        context['Student'] = True               
+        return context 
 
+# Show the list of all students    
+class TeacherListView(ListView, LoginRequiredMixin):
+    model = CustomeUsers
+    template_name = 'Admin_area/userlist.html'
+ 
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        teachers = list(CustomeUsers.get_Teachers())
+        t_profiles = list(Profile.objects.filter(User__in=teachers))
+        context['Users'] = zip(teachers, t_profiles)  
+        context['heading'] = "Teacher List"
+        return context 
 
+# Delete a user(Student/Teacher)
+def UserDeleteView(request, username):
+    userInst = CustomeUsers.objects.get(username=username)
+    userInst.delete()
+    return redirect('admin-dashboard')
+
+# Create a Notice board post
+class CreateNoticeView(CreateView, LoginRequiredMixin):
+    model = Posts
+    form_class = notice
+    template_name = 'admin_area/createpost.html'
+
+    def get_context_data(self,*args, **kwargs):
+        context = super(CreateNoticeView,self).get_context_data(*args, **kwargs)
+        # This is displayed in the template as a heading
+        context['page_heading'] = 'Notice Board'
+        return context
+
+    def form_valid(self,form):
+        # Setting the author of the post as the loggined user
+        form.instance.Author = self.request.user  
+        form.instance.is_notice = True          
+        form.instance.is_p_cell = False
+        form.instance.is_timeline = False
+        return super().form_valid(form)   
+
+# Create a Placement post
+class CreatePlacementView(CreateView, LoginRequiredMixin):
+    model = Posts
+    form_class = notice
+    template_name = 'admin_area/createpost.html'
+
+    def get_context_data(self,*args, **kwargs):
+        context = super(CreatePlacementView,self).get_context_data(*args, **kwargs)
+        context['page_heading'] = 'Placement Cell'
+        return context
+
+    def get_success_url(self):
+        return  reverse('admin-PM')   
+
+    def form_valid(self,form):
+        # Setting the author of the post as the loggined user
+        form.instance.Author = self.request.user  
+        form.instance.is_notice = False          
+        form.instance.is_p_cell = True
+        form.instance.is_timeline = False
+        return super().form_valid(form)          

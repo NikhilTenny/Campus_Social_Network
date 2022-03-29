@@ -1,11 +1,8 @@
-from ast import Delete
-from re import template
-from sre_constants import SUCCESS
-from django.http import HttpResponse
+
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 from .models import Posts
-from django.contrib import messages
 from .forms import (
     UserEditForm,
     ProfileEditForm,
@@ -72,7 +69,7 @@ def EditProfileView(request,username):
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Posts    
     form_class = notice
-    # Set the author of the newly create post as the user logged in
+    # Set the author of the newly create post as the user logged in 
     def form_valid(self,form):
         form.instance.Author = self.request.user  
         return super().form_valid(form)
@@ -100,7 +97,8 @@ class PostDetailView(LoginRequiredMixin, DetailView):
 #View to edit a post 
 class PostEditView (LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Posts
-    fields = ['Title','Content']
+
+    form_class = notice
     def form_valid(self,form):
         return super().form_valid(form)
     #check if it is the author of the post or a teacher who is trying to edit the post
@@ -201,7 +199,9 @@ class PlacementCreateView(LoginRequiredMixin, CreateView):
 
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Posts
-    success_url = '/home'
+    
+    def get_success_url(self):
+        return reverse('userhome')
 
 
     

@@ -17,8 +17,8 @@
                              
                             </i>
                             <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="{% url 'postedit' post.slug %}">Edit</a></li>
-                                <li> <form action="{% url 'postdelete' post.slug %}" method="post">
+                                <li><a class="dropdown-item" href="{% url 'adminpostedit' post.slug %}">Edit</a></li>
+                                <li> <form action="{% url 'adminpostdelete' post.slug %}" method="post">
                                     {% csrf_token %}
                                     <input type="submit" value = 'Delete' class="dropdown-item" onclick="return confirm('Are you sure?');">
                                 </form> <!-- Send a post request to DeleteView to delete the post -->

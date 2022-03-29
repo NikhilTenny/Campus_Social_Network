@@ -6,7 +6,7 @@
 
 
 <div class="row m-4 d-flex justify-content-center">
-    <div class="col-9 bg-light rounded shadow-md ">
+    <div class="col-9 bg-light rounded shadow ">
         <article class="p-4">
             <ul class="post-meta list-inline  d-flex justify-content-between">
                 <li class="list-inline-item">
@@ -22,12 +22,21 @@
             {% endif %}
             <div class="post-content">
                 <p>{{post.Content}}</p>
-                {%if edit %}              
-                <a href="{% url 'postedit' post.slug %}" class="btn btn-secondary">Edit</a>
-                {% endif %}
-                {% if delete %}
-                <a href="{% url 'postdelete' post.slug %}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>  
-                {% endif %}
+                <form action="{% url 'postdelete' post.slug %}" method = 'post'>
+                    {% csrf_token %}
+                {%if edit %}    
+                
+                <div>         
+                    <a href="{% url 'postedit' post.slug %}" class="btn btn-secondary">Edit</a>
+                    {% endif %}
+                    {% if delete %}
+                    
+                        
+                        <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">
+                     
+                    {% endif %}
+                </div>
+                </form>
             </div>
         </article>
     </div>

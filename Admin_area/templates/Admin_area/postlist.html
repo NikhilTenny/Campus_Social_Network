@@ -25,9 +25,9 @@
             <td>{{ post.Title }}</td>
             
             <td>{{ post.created | date:'d-m-Y' }}</td>
-            <td><a href="{% url 'postedit' post.slug %}" class="btn btn-warning btn-sm" >Edit</a></td>
-            <td><a href="{% url 'postview' post.slug %}" class="btn btn-primary btn-sm" >View</a></td>
-            <td><form action="{% url 'postdelete' post.slug %}" method="post">
+            <td><a href="{% url 'adminpostedit' post.slug %}" class="btn btn-warning btn-sm" >Edit</a></td>
+            <td><a href="{% url 'adminpostview' post.slug %}" class="btn btn-primary btn-sm" >View</a></td>
+            <td><form action="{% url 'adminpostdelete' post.slug %}" method="post">
                 {% csrf_token %}
                 <input type="submit" value = 'Delete' class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure?');">
             </form></td> <!-- Send a post request to DeleteView to delete the post -->

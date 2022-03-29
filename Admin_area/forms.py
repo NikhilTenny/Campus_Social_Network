@@ -55,6 +55,8 @@ class RegisterCustomeUserForm(forms.ModelForm):
         model = CustomeUsers
         fields = ['first_name', 'last_name', 'email', 'username']
 
+# Form for Registering Student.
+# It has fields of Profile model
 class RegisterStudentProfileForm(forms.ModelForm):
     Dept = forms.CharField(widget=forms.Select(
         choices=Profile.departments,
@@ -77,4 +79,28 @@ class RegisterStudentProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['Dept', 'Yr']
-     
+
+# Form for Registering Teacher.
+# It has fields of Profile model
+class RegisterTeacherProfileForm(forms.ModelForm):
+    Dept = forms.CharField(widget=forms.Select(
+        choices=Profile.departments,
+        attrs = {
+            'class': 'form-select',
+            'id': 'floatingSelect',
+            'aria-label':"State"
+        },
+        ),initial='bca', required=True)
+    Designation = forms.CharField(widget=forms.TextInput(
+        attrs = {
+            'class': 'form-control',
+            'id': 'floatingName',
+            'placeholder': 'Designation',
+        },
+        ), required=True)    
+        
+
+    class Meta:
+        model = Profile
+        fields = ['Dept', 'Designation']
+        

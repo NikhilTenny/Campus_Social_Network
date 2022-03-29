@@ -1,0 +1,53 @@
+{% extends 'Admin_area/base.html' %}
+{% block Admincontent%}
+<div class="pagetitle">
+    <h1>Register Teacher</h1>
+</div> 
+<div class="row justify-content-center">
+    <div class="col-lg-7 col-md-10 m-4 p-5 shadow">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="form-floating pb-3"><!--Username-->
+                {{uform.username}}
+                <label for="floatingName">Username</label>
+              </div>
+            <div class="row  "> <!--First name and last name-->
+                <div class="col-lg-6 col-sm-12">
+                    <div class="form-floating pb-3">
+                        {{uform.first_name}}
+                        <label for="floatingName">First Name</label>
+                      </div>
+                </div>
+                <div class="col-lg-6 ">
+                    <div class="form-floating pb-3">
+                        {{uform.last_name}}
+                        <label for="floatingName">Last Name</label>
+                      </div>
+                </div>
+            </div>
+            <div class="form-floating pb-3"> <!--Email-->
+                {{uform.email}}
+                <label for="floatingCity">Email</label>
+              </div>
+            <div class="row"> <!--Department and Year-->
+                <div class="col-lg-6 col-sm-12">
+                        <div class="form-floating mb-3">
+                          {{pform.Dept}}
+                          <label for="floatingSelect">Department</label>
+                        </div>        
+                </div>
+                <div class="col-lg-6 col-sm-12">
+                    <div class="form-floating pb-3">
+                        {{pform.Designation}}
+                        <label for="floatingName">Designation</label>
+                      </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+            <button class="btn btn-success col-lg-5 col-sm-12 py-3 mx-5 mt-2 " type="submit"> Register</button>
+            </div>    
+            
+        </form>
+    </div>
+</div>
+{% endblock Admincontent%}
