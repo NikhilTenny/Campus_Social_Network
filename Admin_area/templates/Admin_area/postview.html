@@ -13,9 +13,7 @@
                     </div>
                     <div class="">
                         <div class="dropdown fs-4">
-                            <i class="bi bi-three-dots-vertical " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                             
-                            </i>
+                            <i class="bi bi-three-dots-vertical " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
                             <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton1">
                                 <li><a class="dropdown-item" href="{% url 'adminpostedit' post.slug %}">Edit</a></li>
                                 <li> <form action="{% url 'adminpostdelete' post.slug %}" method="post">
@@ -23,12 +21,8 @@
                                     <input type="submit" value = 'Delete' class="dropdown-item" onclick="return confirm('Are you sure?');">
                                 </form> <!-- Send a post request to DeleteView to delete the post -->
                                 </li>
-
-
-                                  <!-- <a class="dropdown-item" href="{% url 'postdelete' post.slug %}">Delete</a></li> -->
-
                             </ul>
-                          </div>
+                        </div>
                     </div>
                           
                 </div>

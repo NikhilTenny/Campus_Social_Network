@@ -1,19 +1,21 @@
 {% extends 'core/base.html' %}
 {% block content %}
 
-<div class="row justify-content-center my-4 ">
-    <div class="col-8 mt-4 p-3 bg-light shadow-sm">
+<div class="row justify-content-center ">
+    <div class="col-7  p-3  ">
+        <h2 class="d-flex justify-content-center mb-2">Notice Board</h2>
         {% if user.is_teacher %}
-        
         <a href="{% url 'createnotice' %}" ><button class="btn btn-outline-primary btn-lg col-12 mb-3 mt-1">Create Post</button></a>
         {% endif %}
         {% for post in notice %}
-        <div class="d-flex justify-content-between">
-        <span><h2>{{post.Title}}</h2></span>
-        <a href="{% url 'postdetail' post.slug %}" class="btn btn-info btn-lg ">View</a>
+        <div class=" p-2  rounded mb-2 " style="background-color: #CCD1E4;">
+            <div class="d-flex justify-content-between mb-2">
+                <h4 class="card-title">{{post.Title}}</h4>
+                <a href="{% url 'postdetail' post.slug %}" class="btn btn-primary ">View</a>
+            </div>
+            <span class="d-flex justify-content-end pr-2">{{ post.created | date:"D d-F" }}</span> 
         </div>
-        <hr class="border-secondary mx-3">
-        {% endfor %}
+        {% endfor %}        
     
     </div>
 </div>

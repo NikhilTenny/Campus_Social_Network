@@ -1,14 +1,16 @@
 
+from pyexpat import model
+from typing import List
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from .models import Posts
+from .models import Posts, Friends, FriendRequest
 from .forms import (
     UserEditForm,
     ProfileEditForm,
-    notice
-    
+    notice   
 )
+from django.contrib import messages
 from users.models import CustomeUsers, Profile
 from django.views.generic import CreateView, DetailView, UpdateView, ListView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -21,6 +23,7 @@ def home(request):
     profile = Profile(User=request.user) 
     context = {
         'posts':Posts.objects.filter(is_timeline = True).order_by('-created'), # List of posts that is to be displayed in the user home page
+        'notice_post':Posts.objects.filter(is_notice = True).order_by('-created')[:6],
         'p_data':profile,
         }
     return render(request,'core/home.html',context)
@@ -30,20 +33,112 @@ def home(request):
 def ProfileView(request,username): 
     user = CustomeUsers.objects.get(username=username)
     p_data = get_object_or_404(Profile,User=user) 
-    
+    friends = Friends.objects.get_friends(request.user)
+    frd_list = []
+    frd_prof_list = []
+    # Get the list of friends of the user from the friends relationship model
+    for frd in friends:
+        if frd.user1 == request.user:
+            frd_list.append(frd.user2)
+        else:
+            frd_list.append(frd.user1)   
+        # Get the profile of the friend             
+        prof = Profile.objects.get(
+            User=frd_list[-1]
+        )
+        frd_prof_list.append(prof)
+    friend_and_profile = zip(frd_list, frd_prof_list)   
+    # Checking whether the logged user and visited profiles user are already friends  
+    if_friend = Friends.objects.find_if_friends(user, request.user)
+    if if_friend.exists():
+        if_friend = True
     context = {
         # List of timeline posts of the logged in user in the descending order of created date
         'posts':Posts.objects.filter(Author=user).filter(is_timeline=True).order_by('-created'),
         'profile':p_data,
         'user_obj':user,
+        'fp':friend_and_profile,
+        'f_count':len(frd_list),
+        'if_friend':if_friend  
         }
     if request.user == user:
         context['edit'] = True
-    return render(request,'core/profile.html',context) 
+    return render(request,'core/profile.html', context) 
+
+# View to send friend request
+@login_required
+def FriendRequestView(request, username):
+    sender = CustomeUsers.objects.get(username=request.user.username)
+    receiver = CustomeUsers.objects.get(username=username)
+    # Checking for already existing requests
+    req = FriendRequest.objects.filter(
+        reqsender=sender, 
+        reqreceiver=receiver, 
+        rejected=False,
+        accepted=False
+        
+        )
+    if req.exists():
+        msg = "Friend Request Already Send"
+        messages.warning(request,msg)
+        return redirect('userprofile',username)
+    # If request doesn't exist then a new request is created        
+    req = FriendRequest.objects.create(
+        reqsender=sender,
+        reqreceiver=receiver
+    )
+    msg = "Friend Request Send"
+    messages.success(request,msg)
+    return redirect('userprofile',username)
+
+#View to show all the friend requests
+class RequestlistView(LoginRequiredMixin, ListView):
+    model = FriendRequest
+    template_name = 'core/requestlist.html'
+
+    def get_context_data(self, **kwargs):
+        context ={}
+        context['reqs'] = list(FriendRequest.objects.filter(
+            reqreceiver=self.request.user,
+            accepted=False,
+            pending=True,
+            rejected=False, ))
+        return context
+
+# Accept a friend request
+def AcceptRequest(request, id):
+    req = FriendRequest.objects.get(id=id)
+    sender = req.reqsender
+    req.accepted = True
+    req.pending = False
+    req.rejected = False
+    req.save()
+    frdrelation = Friends.objects.create(
+        user1=sender,
+        user2=request.user
+    )
+    # Updating the number of friends in both user profile
+    Profile.update_friend_no(frdrelation.user1)
+    Profile.update_friend_no(frdrelation.user2)
+
+    msg = 'Friend request accepted'
+    messages.success(request, msg)
+    return redirect('requestlist')
+
+# Reject a friend request
+def DeclineRequest(request, id):
+    req = FriendRequest.objects.get(id=id)
+    req.accepted=False
+    req.pending=False
+    req.rejected=True
+    req.save()
+    msg = 'Friend request Rejected'
+    messages.warning(request, msg)
+    return redirect('requestlist')
 
 # Profile edit view
 @login_required
-def EditProfileView(request,username):   
+def EditProfileView(request, username):   
     # Get a Profile model object with data of the current logged in user
     p_obj = get_object_or_404(Profile, User=request.user.id)
     if request.method == 'POST':      
@@ -140,7 +235,7 @@ class StudentsListView(LoginRequiredMixin, ListView):
         return context        
 
 # List all posts in notice board
-class NoticeBoardView(LoginRequiredMixin,ListView):
+class NoticeBoardView(LoginRequiredMixin, ListView):
     model = Posts
     template_name = 'core/noticeboard.html'
     context_object_name = 'notice'
@@ -151,7 +246,7 @@ class NoticeBoardView(LoginRequiredMixin,ListView):
         return context
 
 # List Placement posts 
-class PlacementcellView(LoginRequiredMixin,ListView):
+class PlacementcellView(LoginRequiredMixin, ListView):
     model = Posts
     template_name = 'core/placementcell.html'
     context_object_name = 'placement'
@@ -196,7 +291,7 @@ class PlacementCreateView(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['posttype'] = 'Placement Post'
         return context
-
+# Delete a post
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Posts
     

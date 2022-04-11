@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'crispy_forms',
     'django.contrib.auth',
@@ -43,7 +44,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'core.apps.CoreConfig',
     'Admin_area.apps.AdminAreaConfig',
-
+    'chat.apps.ChatConfig',
 ]
 
 MIDDLEWARE = [
@@ -75,6 +76,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'CSN.wsgi.application'
+ASGI_APPLICATION = 'CSN.routing.application'
 
 
 # Database
@@ -148,3 +150,12 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get('email')
 EMAIL_HOST_PASSWORD = os.environ.get('email_pass')
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}

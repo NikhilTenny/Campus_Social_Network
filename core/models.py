@@ -1,8 +1,9 @@
-
+from tkinter.tix import Tree
 from django.db import models
 from django.urls import reverse
 from users.models import CustomeUsers
 from django.utils.text import slugify
+from .managers import FriendManager
 
 #Store all the timeline,placement and notice board posts
 class Posts(models.Model):
@@ -48,3 +49,27 @@ class Posts(models.Model):
 
     class Meta:
         ordering = ['-created']    
+
+# Store Friend relationship between users
+class Friends(models.Model):
+    user1 = models.ForeignKey(CustomeUsers, on_delete=models.CASCADE,related_name='Friend1')
+    user2 = models.ForeignKey(CustomeUsers, on_delete=models.CASCADE,related_name='Friend2')
+    date = models.DateTimeField(auto_now_add=True)
+
+    objects = FriendManager()
+
+    def __str__(self):
+        return f'{self.user1.username} and {self.user2.username}'
+
+# Store the friend requests send from one user to another
+class FriendRequest(models.Model):
+    reqsender = models.ForeignKey(CustomeUsers, on_delete=models.CASCADE,related_name='senduser')
+    reqreceiver = models.ForeignKey(CustomeUsers, on_delete=models.CASCADE,related_name='receiveuser')
+    pending = models.BooleanField(default=True)
+    accepted = models.BooleanField(default=False)
+    rejected = models.BooleanField(default=False)
+    senddate = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.reqsender.username} to {self.reqreceiver.username}'
+

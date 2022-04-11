@@ -1,19 +1,29 @@
 {% extends 'core/base.html' %}
-
 {% block content %}
 <div class="row py-3 px-4">
     <div class="col-xl-8 col-md-6 col-sm-10 mx-auto">
         <!-- Profile widget -->
+        {% if messages %}
+            {% for message in messages %}
+            <p{% if message.tags %} class=" mt-1 alert alert-{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}       
+        {% endif %}
         <div class="bg-white shadow rounded overflow-hidden mt-2">
             <div id="backgroundpart" class="px-4 pt-0 pb-4 bg-dark">
                 <div class="media align-items-end profile-header">
-                    <div class="profile mr-3 rounded-circle">
-                        
-                        <img src="{{ profile.Profile_pic.url }}" alt="..." style="width: 150px;height: 150px;" class=" img rounded-circle shadow-lg mb-3 ">
+                    <div class="profile rounded-circle">  
+                        <div class="d-flex justify-content-center">           
+                            <img src="{{ profile.Profile_pic.url }}" alt="..." style="width: 150px;height: 150px;" class=" img mr-4 rounded-circle shadow-lg mb-3 ">
+                        </div>
                         {% if edit %}
                         <a href="{% url 'editprofile' user.username %}" class="btn btn-outline-primary   btn-block text-primary">Edit profile</a>
                         {% else %}
-                        <a href="#" class="btn btn-primary   btn-block text-light">Add Friend</a>   
+                        {%if if_friend%}
+                        <a href="{% url 'chat' user_obj.username %}" class="btn btn-primary   btn-block text-light">Message</a>
+                        {% else %}
+                        <a href="{% url 'friendrequest' user_obj.username %}" class="btn btn-primary   btn-block text-light">Add Friend</a>   
+                        
+                        {%endif%}
                         {% endif %}                     
                     </div>
                     <div class="media-body mb-5 text-white">
@@ -22,8 +32,6 @@
                     </div>
                 </div>
             </div>
-            
-
             <div class=" p-4 d-flex justify-content-end text-center">
                 <ul class="list-inline mb-0">
                     <li class="list-inline-item">
@@ -51,17 +59,29 @@
             </div><!-- End profile widget -->
         </div>
     </div>
+    {% if user_obj == user %}
     <div class=" col-4 mx-auto mt-2 rounded ">
         <h2 class="text-bold  pl-3 mb-3">Friends </h2>
-            <div class="card p-2 mb-2">
-                <div class="media"> <img src="https://imgur.com/ZnxJ2SY.png" class="mr-3">
-                    <div class="media-body">
-                        <h5 class="mt-2 mb-0">Anna Gibson</h5>
-                        <div class="d-flex flex-row justify-content-between align-text-center"> <small class="text-muted">Creator</small> <button id="btn-primary" class="btn btn-primary mr-2">Follow</button> </div>
+        {% for f,p in fp %}
+        <div class="card p-2 mb-2">
+            <div class="media"> <img src="{{ p.Profile_pic.url }}" class=" rounded-circle mr-3" width="60" height="60">
+                <div class="media-body">
+                    <h5 class="mt-2 mb-0">{{ f.first_name }}&nbsp{{f.last_name}}</h5>
+                    <div class="d-flex flex-row justify-content-between align-text-center"> 
+                        <small class="text-muted">
+                            {% if f.is_student %}
+                            Student
+                            {% else %}
+                            Teacher
+                            {% endif %}
+                        </small>
+                        <a href="{% url 'chat' f.username %}"><button id="btn-primary" class="btn btn-primary mr-2">Chat</button> </a>
                     </div>
                 </div>
             </div>
-            
+        </div>
+        {% endfor %}       
     </div>
+    {% endif%}
 </div>
 {% endblock content %}

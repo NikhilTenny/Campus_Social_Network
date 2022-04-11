@@ -16,6 +16,8 @@
         <link href="{% static 'Admin_area/assets/vendor/quill/quill.snow.css' %}" rel="stylesheet">
         <link href="{% static 'Admin_area/assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet">
         <link href="{% static 'Admin_area/assets/vendor/simple-datatables/style.css' %}" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'chat/css/personalchat.css' %}">
+        
     </head>
     <body> 
         <section class="container-xxl">
@@ -24,11 +26,11 @@
                     <a href="{% url 'userhome' %}" class="navbar-brand">
                         <span class="text-light font-weight-bolder"> 
                             
-                            <h2><i class="bi bi-book ">&nbsp&nbsp</i>CMS</h2></span>
+                            <h2><i class="bi bi-book ">&nbsp&nbsp</i>CSN</h2></span>
                     </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon "></span>
+                        <span class="navbar-toggler-icon text-light"><i class="bi bi-arrow-down-square-fill"></i></span>
                         </button>
                         <div class="collapse navbar-collapse justify-content-end align-items-center" id="main-nav">
                             <ul class="navbar-nav text-success">
@@ -48,7 +50,7 @@
                                     </li>
                                 {% endif %}
                                 <li class="nav-item">
-                                    <a href="" class="nav-link px-3 text-light fw-normal">Personal</a>
+                                    <a href="{% url 'chatlist' %}" class="nav-link px-3 text-light fw-normal">Personal</a>
                                 </li>
                                 
                                 <li class="nav-item">
@@ -58,7 +60,7 @@
                                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
                                         <li><a class="dropdown-item" href="#">Messages</a></li>
                                         <li><a class="dropdown-item" href="#">Discussion Rooms</a></li>
-                                        <li><a class="dropdown-item" href="#">Friend Request</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'requestlist' %}">Friend Request</a></li>
                                         </ul>
                                     </div>
                                 </li>

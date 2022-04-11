@@ -7,7 +7,7 @@
                 <tr class="p-3">
                     <th scope="col">User</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Phone Number</th>
+
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -16,7 +16,7 @@
                 <tr>
                     <td><img class="img rounded-circle mr-3" src="{{ profile.Profile_pic.url }}" alt="no img" style="width: 40px;height: 40px;">{{User.first_name }} {{User.last_name}}</td>
                     <td>{{User.email}}</td>
-                    <td>{{profile.phone_number}}</td>
+
                     <td><a class="btn btn-primary" href="{% url 'userprofile' User.username %}">View</a></td>
                 </tr>
         {% endfor %}

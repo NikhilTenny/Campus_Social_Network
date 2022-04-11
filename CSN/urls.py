@@ -10,6 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('',include('core.urls')),
     path('',include('Admin_area.urls')),
+    path('',include('chat.urls')),
     path('',U_views.HomeView,name='index'),
     path('login/',U_views.LoginView,name='login'),
     path('logout/',auth_views.LogoutView.as_view(), name='logout'),

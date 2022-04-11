@@ -55,6 +55,7 @@ class CustomeUsers(AbstractUser):
         return self.username
 
 user  = get_user_model()
+
 #Profile details of a teacher or student
 class Profile(models.Model):
     departments = (
@@ -77,7 +78,7 @@ class Profile(models.Model):
     phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True) #phone number field with validations
     Designation = models.CharField(max_length=50, blank=True)
     Address = models.CharField(max_length=300, blank=True)
-    Friends = models.CharField(max_length=50, default = 0)
+    Friends = models.IntegerField(default = 0)
     Posts = models.CharField(max_length=50, default = 0)
     
     #Set a default profile pic when a profil is saved
@@ -97,6 +98,12 @@ class Profile(models.Model):
             img.thumbnail(resize)                           #resize the image to with smaller dimensions
             img.save(self.Profile_pic.path)
     
+    @classmethod
+    def update_friend_no(self,user):
+        instance = self.objects.get(User=user)
+        instance.Friends += 1
+        instance.save()
+
     def __str__(self):
         return f'{self.User.username} Profile' 
            

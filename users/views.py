@@ -30,6 +30,7 @@ def LoginView(request):
                     
                 context = {
                     'posts':Posts.objects.filter(is_timeline = True).order_by('-created'), #List of posts that is to be displayed in the user home page
+                    'notice_post':Posts.objects.filter(is_notice = True).order_by('-created')[:6],
                     'p_data':profile,
                     }
                 

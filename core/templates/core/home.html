@@ -2,8 +2,8 @@
 {% block content %}
 <section class="mainitems " >
     <div class="container-xxl  px-5 my-4">
-        <div class="row mt-5 justify-content-between">
-            <div class="col-md-7 mt-3">
+        <div class="row mt-4 justify-content-around ">
+            <div class="col-lg-7  mt-3 ">
                 <a href = "{% url 'createpost' %}"class=""><button class="btn btn-outline-success btn-lg col-12 mb-1 mt-1">Create Post</button></a>
                 {% for post in posts %}
                 <div class="post border rounded shadow-md border-5 p-3 my-3 " id="timeline_list">
@@ -19,26 +19,31 @@
                     <span><h2>{{post.Title}}</h2></span>
                     {% if post.Picture %}
                     <img class="img-fluid" src="{{ post.Picture.url }}" alt="img not found">
-                    {% endif %}
+                    {% endif %}<br>
                     <span class="my-5">{{ post.Content }}</span> <br>
-                    <span class="text-info ">  {{post.created | date:"d - F - Y"}}</span> <br>
+                    <span class="text-info ">  {{post.created | date:"D - d - F"}}</span> <br>
 
                     
                      
                 </div>
                 {% endfor %} 
             </div>
-            <div class="col-md-4 mt-3 ">
-                <div class="content-section">
-                    <h3>Our Sidebar</h3>
-                    <p class='text-muted'>You can put any information here you'd like.
-                      <ul class="list-group">
-                        <li class="list-group-item list-group-item-light">Latest Posts</li>
-                        <li class="list-group-item list-group-item-light">Announcements</li>
-                        <li class="list-group-item list-group-item-light">Calendars</li>
-                        <li class="list-group-item list-group-item-light">etc</li>
-                      </ul>
-                    </p>
+            <div class="col-lg-4  mt-3 ">
+                <div class="content-section pt-2">
+                    <h3 class="pl-3 ">Recent Notices</h3>
+                    
+                      <ul class="list-group mt-4">
+                          {% for notice in notice_post %}
+                        <li class="list-group-item  ">
+                            <h5 class='list-group-item-light'>{{ notice.Title }}</h5>
+                            <div class="d-flex justify-content-between">
+                                <span>{{notice.edited | date:"d-F"}}</span>
+                                <a href="{% url 'postdetail' notice.slug %}">View</a>
+                            </div>
+                        </li>
+                        {% endfor %}
+                        
+                      </ul>                    
                   </div>
             </div>
         </div>
