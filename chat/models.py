@@ -9,10 +9,10 @@ class ChatSpace(models.Model):
                   ('chatroom','Chat Room'))
     name = models.CharField(max_length=50, null=True, blank=True) 
     description = models.CharField(max_length=200, null=True, blank=True)                 
-    type = models.CharField(max_length=20, choices=chat_type, default='chatroom')                  
+    type = models.CharField(max_length=20, choices=chat_type, default='chatroom')  
+    admin = models.ForeignKey(CustomeUsers, on_delete=models.CASCADE, related_name='room_admin', null=True)                
     users = models.ManyToManyField(CustomeUsers)
     created = models.DateTimeField(auto_now_add=True)
- 
     objects = ChatSpaceManager()
 
     def __str__(self):

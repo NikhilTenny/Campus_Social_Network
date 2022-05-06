@@ -23,5 +23,7 @@ class ChatSpaceManager(models.Manager):
             chat.users.add(other_user)
             return chat
 
+        
+
 
     

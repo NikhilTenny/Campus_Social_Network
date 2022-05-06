@@ -60,3 +60,24 @@
 .border-top {
     border-top: 1px solid #dee2e6!important;
 }
+
+/* ------------------------------------------------------------------------------------------------ */
+/* createdis_room  */
+
+.room_member_scroll {
+    background-color:#ecf0f1;
+    height: 200px;
+    width: auto;
+    overflow-y: scroll;
+}
+
+/* ------------------------------------------------------------------------------------------------ */
+/* Dis_room */
+
+.room_member {
+    text-decoration: none;
+}
+
+.room_member:hover {
+    color: #ffffff;
+}

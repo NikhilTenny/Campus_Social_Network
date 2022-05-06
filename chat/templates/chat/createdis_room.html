@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %}
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-5 mt-5 bg-light p-4">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row mb-3">
+                  <label for="inputEmail3" class="col-sm-2 col-form-label"> Name</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputText" name="room_name" required>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label for="inputEmail3" class="col-sm-2 col-form-label">Description</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputEmail" name="description">
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Members</label>
+                    <div class=" col-sm-10 room_member_scroll mx-3">
+                        {% for user in users %}
+                            <input class=" ml-3" type="checkbox" id="gridCheck1" value="{{ user.username }}" name="members">
+                            <label class="form-check-label" for="gridCheck1">
+                                {{user.first_name}}&nbsp; {{user.last_name}}
+                            </label> <br>
+                        {% endfor %}
+                    </div>  
+                </div>  
+                <div class="text-center">
+                    <button class="btn btn-primary">Create</button>
+                </div>      
+            </form>
+        </div>
+    </div>
+{% endblock content %}
