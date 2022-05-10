@@ -4,18 +4,23 @@
     <div class="row justify-content-center ">
         <div class="col-7  p-3  ">
             {% if messages %}
-                {% for msg in messages %}
-                    <div class="alert alert-{{msg.tag}}">
-                        {{msg}}
-                    </div>
+            <ul class="d-flex justify-content-center">
+                {% for message in messages %}
+                <p{% if message.tags %} class="alert alert-{{ message.tags }} col-12 col-lg-6  col-xl-8"{% endif %}>{{ message }}</p>
                 {% endfor %}
+            </ul>
             {% endif %}
             <h2 class="d-flex justify-content-center mb-2">Discussion Rooms</h2>
             <a href="{% url 'create_dis_room' %}" ><button class="btn btn-outline-secondary py-2 btn-lg col-12 mb-3 mt-1">Create Room</button></a>
             {% for room in rooms %}
-                <div class="bg-light">{{room.name}}
-                    <a href="{% url 'dis_room' room.id user.username%}"><button class="btn btn-success">View</button></a>
-                </div> <br>
+                <div class="d-flex justify-content-between mt-2  p-3 rounded-2" style="background-color: #607D8B;">
+                    <div class="text-light">
+                        <h4>Room Name: {{room.name}}</h4>
+                        Admin: {{room.admin}} <br>
+                        Created: {{ room.created | date:'d F Y' }}
+                    </div> 
+                    <a href="{% url 'dis_room' room.id user.username%}"><button class="btn " style="background-color: #EEEEEE;">View</button></a>
+                </div>
             {% endfor %}
         </div> 
     </div>

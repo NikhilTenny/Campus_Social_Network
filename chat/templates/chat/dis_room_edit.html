@@ -1,0 +1,80 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content">
+    <div class="container pt-4">
+        <div class="col-auto">
+            {% if messages %}
+            <ul class="d-flex justify-content-center">
+                {% for message in messages %}
+                <p{% if message.tags %} class="alert alert-{{ message.tags }} col-12 col-lg-6  col-xl-8"{% endif %}>{{ message }}</p>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="row gap-3 d-flex justify-content-center">
+                
+                <div class="col-12 col-lg-6  col-xl-8 chatpart  shadow " style="border-radius: 25px;background-color: #D3E0EA;">
+                    <div class="py-2 px-4 border-bottom  d-lg-block ">
+                        <div class="d-flex align-items-center border-bottom border-2 border-primary pb-2">
+                            <div class="position-relative ">
+                                <img src="{% static 'chat/images/group.jpg' %}" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+                            </div>
+                            <div class="flex-grow-1 pl-3">
+                                <a href="{% url 'dis_room' room.id user.username %}" style="text-decoration: none; color:black">
+                                    <h4>{{ room.name }}</h4>  
+                                </a>       
+                            </div>
+                            <div>
+                            <div class="dropdown">
+                                <button class="btn btn-lg" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                    
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" href="{% url 'room_details' room.id %}">Room Details</a></li>
+                                    
+                                </ul>
+                                </div>
+                            </div>
+                           
+                        </div>
+                        <div class="my-2 p-3 rounded-2 text-light " style="background: rgb(152, 165, 174);">
+                            <form method="post">
+                                {% csrf_token %}
+                                <div class="input-container">
+                                    <input name="room_desc" type="text"
+                                    {% if room.description  %}
+                                    value="{{room.description}}"
+                                    {% endif %}
+                                    placeholder="No Description" >
+                                   		
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button class=" btn btn-success">Save</button>
+                                </div>    
+                            </form>
+                            
+                        </div>
+                        <div class="my-2 p-3 rounded-2 text-light " style="background: rgb(152, 165, 174);">
+                        {% for mem in members %}                              
+                            <div class="dis_room_member d-flex justify-content-between">
+                                <h5 class="text-light p-2">{{mem.username}}</h5>
+                                <a href="{% url 'add_room_member' room.id mem.username %}"><h4 style="color: #131b42; ">
+                                    <i class="bi bi-person-plus-fill" ></i>
+                                </h4></a>
+                               
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+{% endblock content %}

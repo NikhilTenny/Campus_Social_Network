@@ -9,10 +9,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('',include('core.urls')),
-    path('',include('Admin_area.urls')),
+    path('',include('Admin_area.urls')), 
     path('',include('chat.urls')),
-    path('',U_views.HomeView,name='index'),
-    path('login/',U_views.LoginView,name='login'),
+#     path('',U_views.HomeView,name='index'),
+    path('',U_views.LoginView,name='login'),
     path('logout/',auth_views.LogoutView.as_view(), name='logout'),
     path('password-reset/', 
             auth_views.PasswordResetView.as_view(template_name='users/password_reset.html'),

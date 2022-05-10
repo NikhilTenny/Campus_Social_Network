@@ -6,7 +6,7 @@
             <div class="col-lg-7  mt-3 ">
                 <a href = "{% url 'createpost' %}"class=""><button class="btn btn-outline-success btn-lg col-12 mb-1 mt-1">Create Post</button></a>
                 {% for post in posts %}
-                <div class="post border rounded shadow-md border-5 p-3 my-3 " id="timeline_list">
+                <div class="post border rounded shadow-md border-5 p-3 my-3 " id="timeline_list" >
                     <div class="row justify-content-between">
                         <div class="col-8">
                             <img class=" img rounded-circle mr-2 mb-2" src="{{post.Author.profile.Profile_pic.url}}" style="width:50px;height:50px;" alt="img not found" width="40" height="40">
@@ -32,10 +32,10 @@
                 <div class="content-section pt-2">
                     <h3 class="pl-3 ">Recent Notices</h3>
                     
-                      <ul class="list-group mt-4">
+                      <ul class="list-group mt-4" >
                           {% for notice in notice_post %}
-                        <li class="list-group-item  ">
-                            <h5 class='list-group-item-light'>{{ notice.Title }}</h5>
+                        <li class="list-group-item  " style="background-color: #CFD8DC;">
+                            <h5 class='list-group'>{{ notice.Title }}</h5>
                             <div class="d-flex justify-content-between">
                                 <span>{{notice.edited | date:"d-F"}}</span>
                                 <a href="{% url 'postdetail' notice.slug %}">View</a>

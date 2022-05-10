@@ -14,7 +14,7 @@
                                 <img src="{% static 'chat/images/group.jpg' %}" class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
                             </div>
                             <div class="flex-grow-1 pl-3">
-                                <strong>{{ room.name }}</strong>
+                                <h4>{{ room.name }}</h4>
                                 
                             </div>
                             <div>
@@ -24,8 +24,8 @@
                                     
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="#">View Profile</a></li>
-                                    <li><a class="dropdown-item" href="">Clear Chat</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'room_details' room.id%}">View Details</a></li>
+                                    
                                 </ul>
                                 </div>
                             </div>
@@ -106,15 +106,14 @@
 
 
     ws.onopen = function() {
-        console.log("Connected....");
+
     }
     ws.onclose = function() {
-        console.log("Disconnected!!!");
+
     }
     ws.onmessage = function(event) {
 
         let data = JSON.parse(event['data']);
-        console.log(data.text);
         if(logged_username == data.username){
             
             displayMessage('right', data.text, data.time);

@@ -5,6 +5,8 @@ from django.contrib import messages
 from users.models import Profile, CustomeUsers
 from django.db.models import Q
 
+
+
 # View to list all the personal chats of a user
 class PersonalChatsView(ListView):
     model = ChatSpace 
@@ -77,7 +79,8 @@ class Dis_roomsView(ListView):
 
     def get_context_data(self, **kwargs):
         context = {}
-        rooms = ChatSpace.objects.filter(type='chatroom')
+        # rooms = ChatSpace.objects.filter(type='chatroom')
+        rooms = ChatSpace.objects.users_rooms(self.request.user)
         context['rooms'] = rooms
         return context
 # View to create a discussion room
@@ -95,8 +98,6 @@ def Dis_roomCreateView(request):
         if len(member_list) > 0:
             # Add the selected users to the room
             for member in member_list:
-                if request.user.username == member:
-                    continue
                 user = CustomeUsers.objects.get(username=member)
                 room.users.add(user)
             room.save()    
@@ -113,7 +114,6 @@ def Dis_roomCreateView(request):
 def Dis_roomView(request, id, username):
     roomobj = ChatSpace.objects.get(id=id)
     messages = Message.objects.filter(chat=roomobj)
-
     context = {
         'room': roomobj,
         'messages':messages
@@ -121,5 +121,60 @@ def Dis_roomView(request, id, username):
 
     return render(request, 'chat/dis_room.html', context)    
 
+# Discussion Room Details
+def Dis_room_detailsView(request, id):    
+    roomobj = ChatSpace.objects.get(id=id)
+    members = roomobj.users.all()
+    isadmin = False                      #Flag to check if user is room admin
+    admin = roomobj.admin
+    if request.user == admin:
+        isadmin = True
+    context = {
+        'room': roomobj,
+        'members': members,
+        'isadmin':isadmin
+    }
+    return render(request, 'chat/dis_room_details.html', context)
 
+
+# Remove a member from Discussion room
+def dis_room_remView(request, id, username):
+    roomobj = ChatSpace.objects.get(id=id)
+    user = CustomeUsers.objects.get(username=username)
+    roomobj.users.remove(user)
+    roomobj.save()
+    messages.warning(request, "Member Removed")
+    return redirect('room_details', id)
+
+# Edit discussion room discription or add members to the room
+def dis_room_editView(request, id):
+    roomobj = ChatSpace.objects.get(id=id)
+    members = ChatSpace.objects.get_members_not_in_room(id)
+
+    context = {
+        'room':roomobj,
+        'members':members
+    }
+    if request.method == 'POST':
+        #Get the room discription, if no discription entered it returns an empty string
+        desc = request.POST.get('room_desc',False)  
+        # Save the given description if it is different from old description 
+        if roomobj.description == desc:
+            return render(request, 'chat/dis_room_edit.html', context)
+        else: 
+            roomobj.description = desc
+            roomobj.save() 
+            messages.success(request, 'Description updated')
+            return render(request, 'chat/dis_room_edit.html', context)
+    print(roomobj.users.all())
+    return render(request, 'chat/dis_room_edit.html', context)
+
+# Add a member to the discussion room
+def dis_room_addView(request, id, username):
+    roomobj = ChatSpace.objects.get(id=id)
+    new_member = CustomeUsers.objects.get(username=username) 
+    roomobj.users.add(new_member)
+    roomobj.save()
+    messages.success(request, "New Member Added")
+    return redirect('room_edit_dis', id)
 

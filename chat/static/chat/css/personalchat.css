@@ -81,3 +81,27 @@
 .room_member:hover {
     color: #ffffff;
 }
+/* ------------------------------------------------------------------------------------------------ */
+/* Dis_room edit */
+
+.input-container{
+	position:relative;
+	margin-bottom:25px;
+    
+}
+
+.input-container input{ 
+  border:0;
+  border-bottom:2px solid rgb(243, 237, 237);  
+  background:transparent;
+  width:100%;
+  padding:8px 0 5px 0;
+  font-size:16px;
+  color:#fff;
+}
+.input-container input:focus{ 
+ border:none;	
+ outline:none;
+ border-bottom:2px solid #545151;	
+}
+

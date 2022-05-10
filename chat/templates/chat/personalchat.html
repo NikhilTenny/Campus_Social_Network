@@ -1,9 +1,6 @@
 {% extends "core/base.html" %}
 {% block content %}
 
-
-
-
 <main class="content">
     <div class="container pt-4">
         <div class="col-auto">
@@ -29,9 +26,6 @@
                         </a>
                     {% endfor %}   
                     </ul> 
-
-
-                    
                 </div>
                 <div class="col-12 col-lg-6  col-xl-8 chatpart  shadow " style="border-radius: 25px;background-color: #D3E0EA;">
                     <div class="py-2 px-4 border-bottom  d-lg-block ">
@@ -50,7 +44,7 @@
                                     
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="#">View Profile</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'userprofile' other_user.username %}">View Profile</a></li>
                                     <li><a class="dropdown-item" href="{% url 'clearchat' other_user.username %}">Clear Chat</a></li>
                                 </ul>
                                 </div>
@@ -93,9 +87,6 @@
         </div>
     </div>
 </main>
-
-
-
 <script type="text/javascript">
     var objDiv = document.getElementById("msgList");
     objDiv.scrollTop = objDiv.scrollHeight;
@@ -105,8 +96,8 @@
     let ws = new WebSocket(url);
     let logged_username = '{{ user.username }}'  
     // Display new received or send message in the message box
-    function displayMessage(side, msg, time) {
-        
+
+    function displayMessage(side, msg, time) {   
         listInsidediv1 = document.createElement('div');
         listInsidediv2 = document.createElement('div');
         msgElement = document.createElement('div');
@@ -126,11 +117,8 @@
         var objDiv = document.getElementById("msgList");
         objDiv.scrollTop = objDiv.scrollHeight;
     }
-
     ws.onopen = function() {
-        console.log("Chat Connected....");
-        
-       
+        console.log("Chat Connected....");      
     }
 
     ws.onmessage = function(event) {
@@ -144,18 +132,14 @@
         else {
             displayMessage('left', data.text, data.time);
         }
-
     }
-
     ws.onclose = function() {
         console.log("Chat closed!");
     }
     ws.onerror = function() {
         console.error("An Error happened!!!!!!!");
-    }
-    
-    const mForm = document.getElementById('sendform'); 
-    
+    }   
+    const mForm = document.getElementById('sendform');    
     mForm.addEventListener('submit',sendMsg);
     function sendMsg(e) {
         if(e.preventDefault) {
@@ -167,7 +151,6 @@
         mForm.reset();
         return false;
     }
-    
-    
+  
 </script>
 {% endblock content %}

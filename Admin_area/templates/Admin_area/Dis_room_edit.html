@@ -1,0 +1,62 @@
+{% extends 'Admin_area/base.html' %}
+{% block Admincontent%}
+<div class="pagetitle">
+    <h1>{{page_heading}}</h1>
+</div> 
+{% if messages %}
+    <ul class="d-flex justify-content-center">
+        {% for message in messages %}
+        <span{% if message.tags %} class="alert alert-{{ message.tags }} col-lg-8 col-sm-8  "{% endif %}>{{ message }}</span>
+        {% endfor %}
+    </ul>
+{% endif %}
+<form method="post">
+    {% csrf_token %}
+<section class="d-flex justify-content-center">
+    
+    <div class=" col-lg-6 col-sm-8 shadow rounded-3 p-3">
+        
+        <div class="row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Text</label>
+            <div class="col-sm-10">
+              <input name="roomname" type="Name" class="form-control" value="{{ room.name }}" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-10">
+              <textarea name="roomdesc" class="form-control" style="height: 100px">{{ room.description }}</textarea>
+            </div>
+         </div>
+         <div class="d-flex justify-content-end">
+             <button type="submit" class="btn btn-success">Save</button>
+         </div>
+    </div>
+</section>
+</form>
+<h4 class="my-2">Members</h4>
+<section class="d-flex justify-content-center mt-2">
+<div class="col-lg-6 col-sm-8 shadow p-3">
+    <div class="mt-3">
+        {% for mem in members %}                              
+    <div class="dis_room_member d-flex justify-content-between">
+        <h5 class=" p-2">{{mem.username}}</h5>
+
+        {% if mem.username != admin %}
+        <a href="{% url 'rem_member' room.id mem.username %}">
+            <button type="button" class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="right" title="Remove Member">
+                <i class="bi bi-x-circle"></i>
+              </button>
+        </a>
+        {% else %}
+        <span class="lead"> Admin </span>
+        {% endif %}
+        
+       
+    </div>
+    {% endfor %}
+
+    </div>
+</div>
+</section>
+{% endblock Admincontent%}

@@ -1,7 +1,7 @@
 from django.urls import path,include
 from . import views as ad_views
 
-urlpatterns = [
+urlpatterns = [ 
         path('adminpage/',                              # Admin Dashboard
                 ad_views.AdminHome.as_view(), 
                 name='admin-dashboard'),
@@ -43,5 +43,37 @@ urlpatterns = [
             name='admincreateNotice'),   
         path('adminpage/create-placement/',             # Create a Placement cell post
             ad_views.CreatePlacementView.as_view(),
-            name='admincreatePlacement'),                       
+            name='admincreatePlacement'),    
+        path('adminpage/list-dis_room/',                # List all the discussion rooms
+                ad_views.Dis_roomsView.as_view(),
+                name='admin_dis_rooms'
+        ),
+        path('adminpage/list-dis_room/<int:id>/',       # Edit a discussion room
+                ad_views.EditDis_roomView,
+                name='admin_edit_dis_room'
+        ),
+        path('adminpage/list-dis_room/<int:id>/remove/<str:username>',  # Remove a member from a room
+                ad_views.RemMemberView,
+                name='rem_member'
+        ),
+        path('adminpage/list-dis_room/<int:id>/addmember',        #List all the user to add to the room
+                ad_views.AddMemberlist,
+                name='memberstoadd'
+        ), 
+        path('adminpage/list-dis_room/<int:id>/addmember/<str:username>/add',
+                ad_views.AddMemberView,
+                name='addmember'
+        ),
+        path('adminpage/list-dis_room/<int:id>/remove',                # Remove a discussion room
+                ad_views.RemoveRoomView,
+                name='removeroom'
+        ), 
+        path('adminpage/profile/<int:id>/',                            # View admin profile
+                ad_views.AdminProfileView,
+                name='adminprofile'
+        ),
+        path('adminpage/profile/<int:id>/edit/',                       # Admin profile edit view
+                ad_views.EditAdminProfileView,
+                name='adminprofileedit'
+        )                  
 ]

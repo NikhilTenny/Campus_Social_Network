@@ -57,9 +57,11 @@ class DisRoomCon(AsyncConsumer):
     async def websocket_connect(self, event):
         self.username = self.scope['url_route']['kwargs']['username']
         self.id = self.scope['url_route']['kwargs']['id']  
-        self.user = await sync_to_async(CustomeUsers.objects.get)(username = self.username) 
+        self.user = await sync_to_async(CustomeUsers.objects.get)(username=self.username) 
         self.chat_space = await sync_to_async(ChatSpace.objects.get)(id=self.id)
-        self.room_name = f'{self.chat_space.name}_{self.id}'
+        chat_name = self.chat_space.name
+        name = chat_name.replace(' ', '')
+        self.room_name = f'{name}-{self.id}'
         await self.channel_layer.group_add(self.room_name, self.channel_name)
         await self.send({
             'type': 'websocket.accept',

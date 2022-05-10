@@ -1,0 +1,46 @@
+{% extends 'Admin_area/base.html' %}
+{% block Admincontent%}
+<div class="pagetitle">
+    <h1>{{page_heading}}</h1>
+</div> 
+{% if messages %}
+    <ul class="d-flex justify-content-center">
+        {% for message in messages %}
+        <span{% if message.tags %} class="alert alert-{{ message.tags }} col-lg-12  "{% endif %}>{{ message }}</span>
+        {% endfor %}
+    </ul>
+{% endif %}
+<div class="p-3 shadow-lg mt-3">
+    <table class="table datatable">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Admin</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            
+        </tr>
+        </thead>
+        <tbody>
+            {% for room in rooms %}
+        <tr>    
+            <td>{{ room.name}}</td>
+            <td>{{ room.admin.username }}</td>
+            
+            <td>{{ post.created | date:'d-m-Y' }}</td>
+            <td><a href="{% url 'admin_edit_dis_room' room.id %}" class="btn btn-warning btn-sm" >Edit</a></td>
+            <td><a href="{% url 'memberstoadd' room.id %}" class="btn btn-primary btn-sm" >Add User</a></td>
+            <td>
+                {% csrf_token %}
+                <a href="{% url 'removeroom' room.id %}">
+                    <button class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure?');">Remove</button>
+                </a>
+           </td> 
+        </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock Admincontent%}

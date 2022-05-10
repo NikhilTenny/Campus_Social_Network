@@ -6,6 +6,7 @@ from django.views.generic import (TemplateView, ListView,
         DeleteView, CreateView)
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from chat.models import ChatSpace
 from core.models import Posts
 from django.contrib import messages
 from users.models import CustomeUsers,Profile
@@ -224,4 +225,93 @@ class CreatePlacementView(CreateView, LoginRequiredMixin):
         form.instance.is_notice = False          
         form.instance.is_p_cell = True
         form.instance.is_timeline = False
-        return super().form_valid(form)          
+        return super().form_valid(form)  
+
+# List all discussion rooms
+class Dis_roomsView(ListView, LoginRequiredMixin):
+    model = ChatSpace
+    template_name = 'Admin_area/dis_rooms.html'
+    def get_context_data(self, **kwargs):
+        rooms = ChatSpace.objects.filter(type='chatroom')
+        context = {
+            'rooms':rooms,
+            'page_heading': 'Discussion Rooms',
+        }
+        return context
+
+
+#Edit Discussion room
+def EditDis_roomView(request, id):
+    roomobj = ChatSpace.objects.get(id=id)
+    admin = roomobj.admin.username
+    members = roomobj.users.all()
+    context = {
+        'page_heading':'Edit Discussion Room',
+        'room':roomobj,
+        'members': members,
+        'admin':admin,
+    }
+    if request.method == 'POST':
+        roomobj.description = request.POST['roomdesc']
+        roomobj.name = request.POST['roomname']
+        roomobj.save()
+        messages.success(request, "Details updated")
+    return render(request, 'Admin_area/Dis_room_edit.html', context)
+
+# Remove a member from discussion room
+def RemMemberView(request, id, username):
+    roomobj = ChatSpace.objects.get(id=id)
+    user = CustomeUsers.objects.get(username=username)
+    roomobj.users.remove(user)
+    roomobj.save()
+    messages.warning(request, "Member Removed")
+    return redirect('admin_edit_dis_room', id)
+
+# list users to add to discussion room
+def AddMemberlist(request, id):
+    roomobj = ChatSpace.objects.get(id=id)  
+    members = ChatSpace.objects.get_members_not_in_room(id)
+    context = {
+        'room': roomobj,
+        'members':members,
+       'page_heading':'Add Members to Room',
+    }
+    return render(request, 'Admin_area/MemberList.html', context)
+
+#Add a user to discussion room
+def AddMemberView(request, id, username):
+    roomobj = ChatSpace.objects.get(id=id)
+    new_member = CustomeUsers.objects.get(username=username) 
+    roomobj.users.add(new_member)
+    roomobj.save()
+    messages.success(request, "New Member Added")
+    return redirect('admin_dis_rooms')
+
+# Remove a discussion room
+def RemoveRoomView(request, id):
+    room = ChatSpace.objects.get(id=id)
+    room.delete()
+    messages.success(request, "Discussion Room Removed")    
+    return redirect('admin_dis_rooms')
+
+# Admin Profile View
+def AdminProfileView(request, id):
+    admin = CustomeUsers.objects.get(id=id)
+    context = {
+        'admin':admin,
+        'page_heading': 'Profile'
+    }
+    return render(request, 'Admin_area/AdminProfile.html', context)
+
+# Edit Admin profile 
+def EditAdminProfileView(request, id):
+    admin = CustomeUsers.objects.get(id=id)
+    if request.method == "POST":
+        admin.first_name = request.POST['fname']
+        admin.last_name = request.POST['lname']
+        admin.username = request.POST['uname']
+        admin.save()
+        messages.success(request, "Profile Successfully Updated")
+        return redirect('adminprofile', id)
+    return render(request, 'Admin_area/AdminProfileEdit.html')
+

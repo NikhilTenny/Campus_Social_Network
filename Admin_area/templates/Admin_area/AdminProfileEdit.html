@@ -1,0 +1,35 @@
+{% extends 'Admin_area/base.html' %}
+{% block Admincontent%}
+<div class="pagetitle">
+    <h1>{{page_heading}}</h1>
+</div> 
+<div class="row d-flex justify-content-center">
+    <div class="col-lg-6 p-3 tab-pane fade show active shadow profile-overview" id="profile-overview">
+        <h5 class="card-title">Admin</h5>
+        <form method="post">
+            {% csrf_token %}
+        <div class="row  p-2">
+          <div class="col-lg-3 col-md-4 label ">First Name</div>
+          <div class="col-lg-9 col-md-8">
+              <input name="fname" type="text" class="form-control" value="{{ user.first_name }}"  required>
+            </div>
+        </div>
+        <div class="row p-2">
+          <div class="col-lg-3 col-md-4 label">Last Name</div>
+          <div class="col-lg-9 col-md-8">
+              <input name="lname" type="text" class="form-control" value="{{ user.last_name }}" required>
+            </div>
+        </div>
+        <div class="row p-2">
+            <div class="col-lg-3 col-md-4 label">Username</div>
+            <div class="col-lg-9 col-md-8">
+                <input name="uname" type="text" class="form-control" value="{{ user.username }}" required>
+            </div>
+        </div>
+        <a href="{% url 'adminprofileedit' user.id %}"><button class="btn btn-primary btn-small mt-3">Save</button></a>
+      </div>
+    </form>
+      
+</div>
+
+{% endblock Admincontent%}

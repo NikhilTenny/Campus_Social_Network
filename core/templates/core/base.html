@@ -50,17 +50,15 @@
                                     </li>
                                 {% endif %}
                                 <li class="nav-item">
-                                    <a href="{% url 'chatlist' %}" class="nav-link px-3 text-light fw-normal">Personal</a>
+                                    <a href="{% url 'dis_rooms' %}" class="nav-link px-3 text-light fw-normal">Discussion Rooms</a>
                                 </li>
                                 
-                                <li class="nav-item">
-                                    
+                                <li class="nav-item">                                   
                                     <div class="dropdown">
-                                        <button class="nav-link px-3  text-light  btn " id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false"></i>Notifications <i class="bi bi-app-indicator text-danger"></i></button>
+                                        <button class="nav-link px-3  text-light  btn " id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false"></i>Personal </button>
                                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-                                        <li><a class="dropdown-item" href="#">Messages</a></li>
-                                        <li><a class="dropdown-item" href="{% url 'dis_rooms' %}">Discussion Rooms</a></li>
-                                        <li><a class="dropdown-item" href="{% url 'requestlist' %}">Friend Request</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'chatlist' %}">Personal Chats</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'requestlist' %}">Friend Requests</a></li>
                                         </ul>
                                     </div>
                                 </li>
