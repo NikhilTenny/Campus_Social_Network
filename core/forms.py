@@ -46,7 +46,9 @@ class ProfileEditForm(forms.ModelForm):
         required=False)    
     phone_number = forms.CharField(widget=forms.TextInput(
         attrs={
-        'class':'bg-light form-control'
+        'class':'bg-light form-control',
+        'maxlength':'10',
+        'minlength':'10',
         }),
         required=False)     
     class Meta:

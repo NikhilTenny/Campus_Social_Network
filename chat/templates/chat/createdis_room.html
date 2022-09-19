@@ -1,7 +1,14 @@
 {% extends 'core/base.html' %}
 {% block content %}
+{% if messages %}
+            <ul class="d-flex justify-content-center">
+                {% for message in messages %}
+                <p{% if message.tags %} class="alert alert-{{ message.tags }} col-12 col-lg-6 mt-3 col-xl-8"{% endif %}>{{ message }}</p>
+                {% endfor %}
+            </ul>
+            {% endif %}
     <div class="row justify-content-center">
-        <div class="col-5 mt-5 bg-light p-4">
+        <div class="col-5 mt-1 bg-light p-4">
             <form method="POST">
                 {% csrf_token %}
                 <div class="row mb-3">
@@ -21,7 +28,7 @@
                     <label for="inputEmail3" class="col-sm-2 col-form-label">Members</label>
                     <div class=" col-sm-10 room_member_scroll mx-3">
                         {% for user in users %}
-                            <input class=" ml-3" type="checkbox" id="gridCheck1" value="{{ user.username }}" name="members">
+                            <input class=" ml-3" type="checkbox" id="gridCheck1" value="{{ user.username }}" name="members" >
                             <label class="form-check-label" for="gridCheck1">
                                 {{user.first_name}}&nbsp; {{user.last_name}}
                             </label> <br>

@@ -1,5 +1,4 @@
 
-from pyexpat import model
 from typing import List
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
@@ -148,7 +147,7 @@ def EditProfileView(request, username):
         if userform.is_valid() and profileform.is_valid():
             userform.save()
             profileform.save()
-            return redirect('userprofile',username)  
+            return redirect('userprofile',username)   
     else:
         # If it is a GET request then setting the forms with already stored data of the user
         userform = UserEditForm(instance=request.user)

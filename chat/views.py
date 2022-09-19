@@ -85,29 +85,34 @@ class Dis_roomsView(ListView):
         return context
 # View to create a discussion room
 def Dis_roomCreateView(request):
+    users = CustomeUsers.objects.filter(is_teacher=True) | CustomeUsers.objects.filter(is_student=True)
+    context = {
+        'users' : users
+    }
+    
     if request.method == 'POST':
         member_list = request.POST.getlist('members')
         room_name = request.POST.get('room_name')
-        print(room_name)
         desc = request.POST.get('description')
+        if len(member_list) < 1:
+            messages.warning(request,"Select one or more members to create a room")
+            return render(request, 'chat/createdis_room.html', context)
         room = ChatSpace.objects.create(
             name=room_name,
             description=desc,
             admin=request.user
         )
-        if len(member_list) > 0:
-            # Add the selected users to the room
-            for member in member_list:
-                user = CustomeUsers.objects.get(username=member)
-                room.users.add(user)
-            room.save()    
+        # Add the selected users to the room
+        for member in member_list:
+            user = CustomeUsers.objects.get(username=member)
+            room.users.add(user)
+        if request.user.username not in member_list:
+            admuser = CustomeUsers.objects.get(username=request.user.username) 
+            room.users.add(admuser)   
+        room.save()    
         if room:
             messages.success(request,"New Discussion room created")
             return redirect('dis_rooms')    
-    users = CustomeUsers.objects.filter(is_teacher=True) | CustomeUsers.objects.filter(is_student=True)
-    context = {
-        'users' : users
-    }
     return render(request, 'chat/createdis_room.html', context)  
 
 # Discussion Room View
@@ -118,7 +123,6 @@ def Dis_roomView(request, id, username):
         'room': roomobj,
         'messages':messages
     }
-
     return render(request, 'chat/dis_room.html', context)    
 
 # Discussion Room Details
@@ -169,6 +173,13 @@ def dis_room_editView(request, id):
     print(roomobj.users.all())
     return render(request, 'chat/dis_room_edit.html', context)
 
+# Delete a discussion room
+def dis_room_deleteView(request, id):
+    room = ChatSpace.objects.get(id=id)
+    room.delete()
+    messages.success(request, "Discussion Room Removed")    
+    return redirect('dis_rooms')
+
 # Add a member to the discussion room
 def dis_room_addView(request, id, username):
     roomobj = ChatSpace.objects.get(id=id)
@@ -177,4 +188,6 @@ def dis_room_addView(request, id, username):
     roomobj.save()
     messages.success(request, "New Member Added")
     return redirect('room_edit_dis', id)
+
+
 

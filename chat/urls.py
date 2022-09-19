@@ -22,9 +22,13 @@ urlpatterns = [
         chat_view.Dis_room_detailsView,
         name='room_details'
     ) ,
-    path('home/discussion_rooms/edit/<int:id>/',        # Edit room            
+    path('home/discussion_rooms/edit/<int:id>/',        # Edit discussion room            
         chat_view.dis_room_editView, 
         name='room_edit_dis' 
+    ),
+    path('home/discussion_rooms/delete/<int:id>/',        # Delete discussion room            
+        chat_view.dis_room_deleteView, 
+        name='room_delete_dis' 
     ),
     path('home/discussion_rooms/<int:id>/remove/<str:username>/',   #Remove a member from room
         chat_view.dis_room_remView,
@@ -33,5 +37,6 @@ urlpatterns = [
     path('home/discussion_rooms/<int:id>/add/<str:username>/',      #Add a member to room
         chat_view.dis_room_addView,
         name='add_room_member'
-    )
+    ),
+   
 ]

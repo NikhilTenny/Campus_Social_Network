@@ -36,4 +36,4 @@ class LoginForm(forms.Form):
         attrs={
         'class':'form-control',                 #Specify the class name of the input element in the template
         'id':'yourPassword' 
-        }))
+        })) 

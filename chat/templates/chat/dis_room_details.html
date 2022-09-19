@@ -27,16 +27,17 @@
                             </div>
                         
                             <div>
-                            <div class="dropdown">
-                                <button class="btn btn-lg" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-three-dots-vertical"></i>
-                                    
-                                </button>
-                                {% if isadmin %}
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="{% url 'room_edit_dis' room.id %}">Edit or add members</a></li>
-                                </ul>
-                                {% endif %}
+                                <div class="dropdown">
+                                    <button class="btn btn-lg" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-three-dots-vertical"></i>
+                                        
+                                    </button>
+                                    {% if isadmin %}
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item" href="{% url 'room_edit_dis' room.id %}">Edit or add members</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'room_delete_dis' room.id %}">Delete Discussion Room</a></li>
+                                    </ul>
+                                    {% endif %}
                                 </div>
                             </div>
                             

@@ -196,6 +196,8 @@ class CreateNoticeView(CreateView, LoginRequiredMixin):
         # This is displayed in the template as a heading
         context['page_heading'] = 'Notice Board'
         return context
+    def get_success_url(self):
+        return  reverse('admin-NB')
 
     def form_valid(self,form):
         # Setting the author of the post as the loggined user
