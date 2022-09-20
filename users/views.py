@@ -8,10 +8,13 @@ from django.contrib import messages
 from .models import Profile
 from core.models import Posts
 from Admin_area import views as adminviews
+from django.contrib.auth.decorators import login_required
+
 
 #Home page
-def HomeView(request):
-    return render(request,'core/index.html')
+# @login_required
+# def HomeView(request):
+#     return render(request,'core/index.html')
 
 
 #Student/teacher login page
@@ -24,17 +27,9 @@ def LoginView(request):
             user = authenticate(request, username = uname, password = passw)
             if user is not None:
                 login(request,user)
-                profile = Profile(User = request.user)
                 if user.is_superuser:
                     return redirect('admin-dashboard')
-                    
-                context = {
-                    'posts':Posts.objects.filter(is_timeline = True).order_by('-created'), #List of posts that is to be displayed in the user home page
-                    'notice_post':Posts.objects.filter(is_notice = True).order_by('-created')[:6],
-                    'p_data':profile,
-                    }
-                
-                return render(request,'core/home.html',context)
+                return redirect('userhome')
                 
             else:
                 form = LoginForm()

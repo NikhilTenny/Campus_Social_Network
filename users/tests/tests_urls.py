@@ -1,6 +1,5 @@
 from django.test import TestCase      #This is used in test with no interaction with database 
 from django.urls import reverse,resolve     
-from ..views import HomeView       
  
 #Django looks for tests by first looking for files starting with 'Tests'
 #Second, class starting with 'Tests' and third it looks for functions with starting as 'Tests
