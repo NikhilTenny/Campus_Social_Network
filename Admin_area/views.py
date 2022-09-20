@@ -5,6 +5,7 @@ from django.views.generic import (TemplateView, ListView,
         DetailView, UpdateView, 
         DeleteView, CreateView)
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from chat.models import ChatSpace
 from core.models import Posts
@@ -19,7 +20,7 @@ from django.contrib.auth.hashers import make_password
 
 
 # Admin Dashboard View
-class AdminHome(TemplateView, LoginRequiredMixin):
+class AdminHome(LoginRequiredMixin, TemplateView):
     template_name = 'Admin_area/dashboard.html'
     context_object_name = 'details'
     def get_context_data(self,**kwargs):
@@ -34,7 +35,7 @@ class AdminHome(TemplateView, LoginRequiredMixin):
         return context
 
 # List all the notice board posts
-class NoticeBoardView(ListView, LoginRequiredMixin):
+class NoticeBoardView(LoginRequiredMixin, ListView):
     model = Posts
     template_name = 'Admin_area/postlist.html'
     def get_context_data(self):
@@ -44,7 +45,7 @@ class NoticeBoardView(ListView, LoginRequiredMixin):
         return context
 
 # List all the timeline posts
-class TimelineView(ListView, LoginRequiredMixin):
+class TimelineView(LoginRequiredMixin, ListView):
     model = Posts
     template_name = 'Admin_area/postlist.html'
     def get_context_data(self):
@@ -54,7 +55,7 @@ class TimelineView(ListView, LoginRequiredMixin):
         return context
 
 # List all the Placement posts
-class PlacementView(ListView, LoginRequiredMixin):
+class PlacementView(LoginRequiredMixin, ListView):
     model = Posts
     template_name = 'Admin_area/postlist.html'
     def get_context_data(self):
@@ -64,13 +65,13 @@ class PlacementView(ListView, LoginRequiredMixin):
         return context
 
 # View a Post in detail
-class PostDetailView(DetailView, LoginRequiredMixin):
+class PostDetailView(LoginRequiredMixin, DetailView):
     model = Posts
     template_name = 'Admin_area/postview.html' 
     context_object_name = 'post'
 
 # Edit a post
-class PostEditView(UpdateView, LoginRequiredMixin):
+class PostEditView(LoginRequiredMixin, UpdateView):
     model = Posts 
     template_name = 'Admin_area/postedit.html'  
     form_class = PostEditForm 
@@ -87,7 +88,7 @@ class PostEditView(UpdateView, LoginRequiredMixin):
         return reverse(viewname, kwargs ={'slug':self.object.slug})
 
 # View to Remove a post
-class PostDeleteView(DeleteView, LoginRequiredMixin, SuccessMessageMixin):
+class PostDeleteView(LoginRequiredMixin, DeleteView,  SuccessMessageMixin):
     model = Posts
     success_message = "Post Deleted Successfully"
     #To specify the url to specify after successfull deletion of the post
@@ -99,6 +100,7 @@ class PostDeleteView(DeleteView, LoginRequiredMixin, SuccessMessageMixin):
         return super(PostDeleteView, self).delete(request, *args, **kwargs)    
 
 # View to Register a student
+@login_required
 def StudentCreateview(request):
     if request.method == 'POST':
         userForm = RegisterCustomeUserForm(request.POST)
@@ -125,6 +127,7 @@ def StudentCreateview(request):
     return render(request,'Admin_area/stureg.html',context)
 
 # To register a Teacher
+@login_required
 def TeacherCreateView(request):
     if request.method == 'POST':
         userForm = RegisterCustomeUserForm(request.POST)
@@ -150,7 +153,7 @@ def TeacherCreateView(request):
     return render(request,'Admin_area/teacherreg.html',context)
 
 # Show the list of all students    
-class StudentListView(ListView, LoginRequiredMixin):
+class StudentListView(LoginRequiredMixin, ListView):
     model = CustomeUsers
     template_name = 'Admin_area/userlist.html'
     
@@ -167,7 +170,7 @@ class StudentListView(ListView, LoginRequiredMixin):
         return context 
 
 # Show the list of all students    
-class TeacherListView(ListView, LoginRequiredMixin):
+class TeacherListView(LoginRequiredMixin, ListView):
     model = CustomeUsers
     template_name = 'Admin_area/userlist.html'
  
@@ -180,13 +183,14 @@ class TeacherListView(ListView, LoginRequiredMixin):
         return context 
 
 # Delete a user(Student/Teacher)
+@login_required
 def UserDeleteView(request, username):
     userInst = CustomeUsers.objects.get(username=username)
     userInst.delete()
     return redirect('admin-dashboard')
 
 # Create a Notice board post
-class CreateNoticeView(CreateView, LoginRequiredMixin):
+class CreateNoticeView(LoginRequiredMixin, CreateView):
     model = Posts
     form_class = notice
     template_name = 'admin_area/createpost.html'
@@ -208,7 +212,7 @@ class CreateNoticeView(CreateView, LoginRequiredMixin):
         return super().form_valid(form)   
 
 # Create a Placement post
-class CreatePlacementView(CreateView, LoginRequiredMixin):
+class CreatePlacementView(LoginRequiredMixin, CreateView):
     model = Posts
     form_class = notice
     template_name = 'admin_area/createpost.html'
@@ -230,7 +234,7 @@ class CreatePlacementView(CreateView, LoginRequiredMixin):
         return super().form_valid(form)  
 
 # List all discussion rooms
-class Dis_roomsView(ListView, LoginRequiredMixin):
+class Dis_roomsView(LoginRequiredMixin, ListView):
     model = ChatSpace
     template_name = 'Admin_area/dis_rooms.html'
     def get_context_data(self, **kwargs):
@@ -243,6 +247,7 @@ class Dis_roomsView(ListView, LoginRequiredMixin):
 
 
 #Edit Discussion room
+@login_required
 def EditDis_roomView(request, id):
     roomobj = ChatSpace.objects.get(id=id)
     admin = roomobj.admin.username
@@ -261,6 +266,7 @@ def EditDis_roomView(request, id):
     return render(request, 'Admin_area/Dis_room_edit.html', context)
 
 # Remove a member from discussion room
+@login_required
 def RemMemberView(request, id, username):
     roomobj = ChatSpace.objects.get(id=id)
     user = CustomeUsers.objects.get(username=username)
@@ -270,6 +276,7 @@ def RemMemberView(request, id, username):
     return redirect('admin_edit_dis_room', id)
 
 # list users to add to discussion room
+@login_required
 def AddMemberlist(request, id):
     roomobj = ChatSpace.objects.get(id=id)  
     members = ChatSpace.objects.get_members_not_in_room(id)
@@ -281,6 +288,7 @@ def AddMemberlist(request, id):
     return render(request, 'Admin_area/MemberList.html', context)
 
 #Add a user to discussion room
+@login_required
 def AddMemberView(request, id, username):
     roomobj = ChatSpace.objects.get(id=id)
     new_member = CustomeUsers.objects.get(username=username) 
@@ -290,6 +298,7 @@ def AddMemberView(request, id, username):
     return redirect('admin_dis_rooms')
 
 # Remove a discussion room
+@login_required
 def RemoveRoomView(request, id):
     room = ChatSpace.objects.get(id=id)
     room.delete()
@@ -297,6 +306,7 @@ def RemoveRoomView(request, id):
     return redirect('admin_dis_rooms')
 
 # Admin Profile View
+@login_required
 def AdminProfileView(request, id):
     admin = CustomeUsers.objects.get(id=id)
     context = {
@@ -306,6 +316,7 @@ def AdminProfileView(request, id):
     return render(request, 'Admin_area/AdminProfile.html', context)
 
 # Edit Admin profile 
+@login_required
 def EditAdminProfileView(request, id):
     admin = CustomeUsers.objects.get(id=id)
     if request.method == "POST":

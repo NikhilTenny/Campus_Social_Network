@@ -4,6 +4,8 @@ from .models import ChatSpace, Message
 from django.contrib import messages
 from users.models import Profile, CustomeUsers
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+
 
 
 
@@ -33,6 +35,7 @@ class PersonalChatsView(ListView):
         return context
 
 # View in which the logged user can chat with another user        
+@login_required
 def ChattingView(request,username): 
     user = request.user
     other_user = CustomeUsers.objects.get(username=username)
@@ -65,6 +68,7 @@ def ChattingView(request,username):
     return render(request,'chat/personalchat.html',context)         
 
 # View to clear the messages in a chat
+@login_required
 def ClearChatView(request,username):
     user = request.user
     other_user = CustomeUsers.objects.get(username=username)
@@ -84,6 +88,7 @@ class Dis_roomsView(ListView):
         context['rooms'] = rooms
         return context
 # View to create a discussion room
+@login_required
 def Dis_roomCreateView(request):
     users = CustomeUsers.objects.filter(is_teacher=True) | CustomeUsers.objects.filter(is_student=True)
     context = {
@@ -116,6 +121,7 @@ def Dis_roomCreateView(request):
     return render(request, 'chat/createdis_room.html', context)  
 
 # Discussion Room View
+@login_required
 def Dis_roomView(request, id, username):
     roomobj = ChatSpace.objects.get(id=id)
     messages = Message.objects.filter(chat=roomobj)
@@ -126,6 +132,7 @@ def Dis_roomView(request, id, username):
     return render(request, 'chat/dis_room.html', context)    
 
 # Discussion Room Details
+@login_required
 def Dis_room_detailsView(request, id):    
     roomobj = ChatSpace.objects.get(id=id)
     members = roomobj.users.all()
@@ -142,6 +149,7 @@ def Dis_room_detailsView(request, id):
 
 
 # Remove a member from Discussion room
+@login_required
 def dis_room_remView(request, id, username):
     roomobj = ChatSpace.objects.get(id=id)
     user = CustomeUsers.objects.get(username=username)
@@ -151,6 +159,7 @@ def dis_room_remView(request, id, username):
     return redirect('room_details', id)
 
 # Edit discussion room discription or add members to the room
+@login_required
 def dis_room_editView(request, id):
     roomobj = ChatSpace.objects.get(id=id)
     members = ChatSpace.objects.get_members_not_in_room(id)
@@ -174,6 +183,7 @@ def dis_room_editView(request, id):
     return render(request, 'chat/dis_room_edit.html', context)
 
 # Delete a discussion room
+@login_required
 def dis_room_deleteView(request, id):
     room = ChatSpace.objects.get(id=id)
     room.delete()
@@ -181,6 +191,7 @@ def dis_room_deleteView(request, id):
     return redirect('dis_rooms')
 
 # Add a member to the discussion room
+@login_required
 def dis_room_addView(request, id, username):
     roomobj = ChatSpace.objects.get(id=id)
     new_member = CustomeUsers.objects.get(username=username) 

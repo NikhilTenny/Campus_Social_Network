@@ -105,6 +105,7 @@ class RequestlistView(LoginRequiredMixin, ListView):
         return context
 
 # Accept a friend request
+@login_required
 def AcceptRequest(request, id):
     req = FriendRequest.objects.get(id=id)
     sender = req.reqsender
@@ -125,6 +126,7 @@ def AcceptRequest(request, id):
     return redirect('requestlist')
 
 # Reject a friend request
+@login_required
 def DeclineRequest(request, id):
     req = FriendRequest.objects.get(id=id)
     req.accepted=False
