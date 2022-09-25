@@ -99,8 +99,8 @@ class Profile(models.Model):
             img.save(self.Profile_pic.path)
     
     @classmethod
-    def update_friend_no(self,user):
-        instance = self.objects.get(User=user)
+    def update_friend_no(cls,user):
+        instance = cls.objects.get(User=user)
         instance.Friends += 1
         instance.save()
 

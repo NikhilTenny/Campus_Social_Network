@@ -10,22 +10,23 @@ from Admin_area.forms import (
     )
 
 class TestForms(TestCase):
-    def setUp(self):
-        self.Cust_user_form_data = {
+    @classmethod
+    def setUpTestData(cls):
+        cls.Cust_user_form_data = {
             'first_name' : 'test_f_name',
             'last_name' : 'test_l_name',
             'username' : 'testuser',
             'email' : 'test@testdomain.com'
         }
-        self.Student_profile_form_data = {
+        cls.Student_profile_form_data = {
             'Dept': 'bca',
             'Yr' : 'first'
         }
-        self.Teacher_profile_form_data = {
+        cls.Teacher_profile_form_data = {
             'Dept' : 'baenglish',
             'Designation' : 'A very good position'
         }
-        self.Post_form_data = {
+        cls.Post_form_data = {
             'Title' : 'The grand Title',
             'Content' : 'Content for the Grand Title'
         }

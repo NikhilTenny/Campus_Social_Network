@@ -11,23 +11,24 @@ from Admin_area.forms import (RegisterCustomeUserForm,
     )
 
 class TestAdminListViews(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.login_url = reverse('login') 
-        self.pswd_hash = make_password('fortesting')
-        self.admin_details = {
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+        cls.login_url = reverse('login') 
+        cls.pswd_hash = make_password('fortesting')
+        cls.admin_details = {
             'username' : 'adminuser',
-            'password' : self.pswd_hash,
+            'password' : cls.pswd_hash,
             'is_superuser' : 'True'
         }
-        self.ad_user = CustomeUsers.objects.create(**self.admin_details)
-        self.ad_credentials = {
+        cls.ad_user = CustomeUsers.objects.create(**cls.admin_details)
+        cls.ad_credentials = {
             'username' : 'adminuser',
             'password' : 'fortesting'
         }
-        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
 
     def test_ad_home_get(self):
+        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
         self.url = reverse('admin-dashboard')
 
         response = self.client.get(self.url)
@@ -35,6 +36,7 @@ class TestAdminListViews(TestCase):
         self.assertTemplateUsed(response, 'Admin_area/dashboard.html')
     
     def test_notice_board_view_get(self):
+        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
         self.url = reverse('admin-NB')
 
         response = self.client.get(self.url)
@@ -42,6 +44,7 @@ class TestAdminListViews(TestCase):
         self.assertTemplateUsed(response, 'Admin_area/postlist.html')
 
     def test_TimelineView_get(self):
+        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
         self.url = reverse('admin-TL')
 
         response = self.client.get(self.url)
@@ -49,6 +52,7 @@ class TestAdminListViews(TestCase):
         self.assertTemplateUsed(response, 'Admin_area/postlist.html')
     
     def test_PlacementView_get(self):
+        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
         self.url = reverse('admin-PM')
 
         response = self.client.get(self.url)
@@ -56,6 +60,7 @@ class TestAdminListViews(TestCase):
         self.assertTemplateUsed(response, 'Admin_area/postlist.html')
 
     def test_StudentListView_get(self):
+        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
         self.url = reverse('stulist')
 
         response = self.client.get(self.url)
@@ -63,6 +68,7 @@ class TestAdminListViews(TestCase):
         self.assertTemplateUsed(response, 'Admin_area/userlist.html')
 
     def test_TeacherListView_get(self):
+        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
         self.url = reverse('teacherlist')
 
         response = self.client.get(self.url)
@@ -70,6 +76,7 @@ class TestAdminListViews(TestCase):
         self.assertTemplateUsed(response, 'Admin_area/userlist.html')
 
     def test_Dis_roomsView_get(self):
+        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
         self.url = reverse('admin_dis_rooms')
 
         response = self.client.get(self.url)
@@ -77,23 +84,23 @@ class TestAdminListViews(TestCase):
         self.assertTemplateUsed(response, 'Admin_area/dis_rooms.html')
 
 class TestStudentCreateview(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.login_url = reverse('login') 
-        self.pswd_hash = make_password('fortesting')
-        self.admin_details = {
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+        cls.login_url = reverse('login') 
+        cls.pswd_hash = make_password('fortesting')
+        cls.admin_details = {
             'username' : 'adminuser',
-            'password' : self.pswd_hash,
+            'password' : cls.pswd_hash,
             'is_superuser' : 'True'
         }
-        self.ad_user = CustomeUsers.objects.create(**self.admin_details)
-        self.ad_credentials = {
+        cls.ad_user = CustomeUsers.objects.create(**cls.admin_details)
+        cls.ad_credentials = {
             'username' : 'adminuser',
             'password' : 'fortesting'
         }
-        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
-        self.url = reverse('sturegister')
-        self.form_data = {
+        cls.url = reverse('sturegister')
+        cls.form_data = {
             'first_name' : 'test_f_name',
             'last_name' : 'test_l_name',
             'username' : 'testuser',
@@ -103,6 +110,7 @@ class TestStudentCreateview(TestCase):
         }
     
     def test_StudentCreateview_GET(self):
+        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
         response = self.client.get(self.url)
 
         self.assertTrue(response.context['uform'])
@@ -111,6 +119,7 @@ class TestStudentCreateview(TestCase):
         self.assertEquals(response.status_code, 200)
 
     def test_StudentCreateview_POST(self):
+        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
         response = self.client.post(self.url, self.form_data)
         self.created_stu = CustomeUsers.objects.get(username='testuser') 
         
@@ -120,23 +129,23 @@ class TestStudentCreateview(TestCase):
         self.assertEquals(response.status_code, 302)
 
 class TestTeacherCreateview(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.login_url = reverse('login') 
-        self.pswd_hash = make_password('fortesting')
-        self.admin_details = {
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+        cls.login_url = reverse('login') 
+        cls.pswd_hash = make_password('fortesting')
+        cls.admin_details = {
             'username' : 'adminuser',
-            'password' : self.pswd_hash,
+            'password' : cls.pswd_hash,
             'is_superuser' : 'True'
         }
-        self.ad_user = CustomeUsers.objects.create(**self.admin_details)
-        self.ad_credentials = {
+        cls.ad_user = CustomeUsers.objects.create(**cls.admin_details)
+        cls.ad_credentials = {
             'username' : 'adminuser',
             'password' : 'fortesting'
         }
-        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
-        self.url = reverse('teacherregister')
-        self.form_data = {
+        cls.url = reverse('teacherregister')
+        cls.form_data = {
             'first_name' : 'test_f_name',
             'last_name' : 'test_l_name',
             'username' : 'testuser',
@@ -145,6 +154,7 @@ class TestTeacherCreateview(TestCase):
             'Designation' : 'A very good position'
         }
     def test_TeacherCreateView_GET(self):
+        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
         response = self.client.get(self.url)
 
         self.assertTrue(response.context['uform'])
@@ -153,6 +163,7 @@ class TestTeacherCreateview(TestCase):
         self.assertEquals(response.status_code, 200)
 
     def test_TeacherCreateview_POST(self):
+        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
         response = self.client.post(self.url, self.form_data)
         self.created_teacher = CustomeUsers.objects.get(username = 'testuser') 
 
@@ -162,24 +173,24 @@ class TestTeacherCreateview(TestCase):
         self.assertEquals(response.status_code, 302)
 
 class TestUserDeleteView(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.login_url = reverse('login') 
-        self.pswd_hash = make_password('fortesting')
-        self.admin_details = {
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+        cls.login_url = reverse('login') 
+        cls.pswd_hash = make_password('fortesting')
+        cls.admin_details = {
             'username' : 'adminuser',
-            'password' : self.pswd_hash,
+            'password' : cls.pswd_hash,
             'is_superuser' : 'True'
         }
-        self.ad_user = CustomeUsers.objects.create(**self.admin_details)
-        self.ad_credentials = {
+        cls.ad_user = CustomeUsers.objects.create(**cls.admin_details)
+        cls.ad_credentials = {
             'username' : 'adminuser',
             'password' : 'fortesting'
         }
-        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
-        self.reg_url = reverse('teacherregister')
-        self.delete_url = reverse('userdelete', args=['testuser'])
-        self.user_form_data = {
+        cls.reg_url = reverse('teacherregister')
+        cls.delete_url = reverse('userdelete', args=['testuser'])
+        cls.user_form_data = {
             'first_name' : 'test_f_name',
             'last_name' : 'test_l_name',
             'username' : 'testuser',
@@ -187,36 +198,39 @@ class TestUserDeleteView(TestCase):
             'Dept': 'bca',
             'Designation' : 'A very good position'
         }
-        self.client.post(self.reg_url, self.user_form_data)
+        cls.client.post(cls.reg_url, cls.user_form_data)
 
     def test_UserDeleteView(self):
+        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
+        create_response = self.client.post(reverse('teacherregister'), self.user_form_data)
         response = self.client.get(self.delete_url)
 
         self.assertEquals(response.status_code, 302)
 
 class TestCreateNoticeView(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.login_url = reverse('login') 
-        self.pswd_hash = make_password('fortesting')
-        self.admin_details = {
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+        cls.login_url = reverse('login') 
+        cls.pswd_hash = make_password('fortesting')
+        cls.admin_details = {
             'username' : 'adminuser',
-            'password' : self.pswd_hash,
+            'password' : cls.pswd_hash,
             'is_superuser' : 'True'
         }
-        self.ad_user = CustomeUsers.objects.create(**self.admin_details)
-        self.ad_credentials = {
+        cls.ad_user = CustomeUsers.objects.create(**cls.admin_details)
+        cls.ad_credentials = {
             'username' : 'adminuser',
             'password' : 'fortesting'
         }
-        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
-        self.notice_form_data = {
+        cls.notice_form_data = {
             'Title' : 'Hello Title',
             'Content' : 'Hello Title\'s hello content'  
         }
-        self.notice_url = reverse('admincreateNotice')
+        cls.notice_url = reverse('admincreateNotice')
 
     def test_CreateNoticeView_GET(self):
+        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
         response = self.client.get(self.notice_url)
 
         self.assertEquals(response.status_code, 200)
@@ -224,40 +238,44 @@ class TestCreateNoticeView(TestCase):
     
 
     def test_CreateNoticeView_POST(self):
+        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
         response = self.client.post(self.notice_url, self.notice_form_data)
 
         self.assertEquals(response.status_code, 302)
         self.assertRedirects(response, reverse('admin-NB'))
 
 class TestCreatePlacementView(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.login_url = reverse('login') 
-        self.pswd_hash = make_password('fortesting')
-        self.admin_details = {
+    
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+        cls.login_url = reverse('login') 
+        cls.pswd_hash = make_password('fortesting')
+        cls.admin_details = {
             'username' : 'adminuser',
-            'password' : self.pswd_hash,
+            'password' : cls.pswd_hash,
             'is_superuser' : 'True'
         }
-        self.ad_user = CustomeUsers.objects.create(**self.admin_details)
-        self.ad_credentials = {
+        cls.ad_user = CustomeUsers.objects.create(**cls.admin_details)
+        cls.ad_credentials = {
             'username' : 'adminuser',
             'password' : 'fortesting'
         }
-        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
-        self.notice_form_data = {
+        cls.notice_form_data = {
             'Title' : 'Hello Title',
             'Content' : 'Hello Title\'s hello content'  
         }
-        self.placemnt_url = reverse('admincreatePlacement')
+        cls.placemnt_url = reverse('admincreatePlacement')
 
     def test_CreatePlacementView_GET(self):
+        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
         response = self.client.get(self.placemnt_url)
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'admin_area/createpost.html')
 
     def test_CreatePlacementView_POST(self):
+        self.login_response = self.client.post(self.login_url, self.ad_credentials, follow=True)
         response = self.client.post(self.placemnt_url, self.notice_form_data)
 
         self.assertEquals(response.status_code, 302)

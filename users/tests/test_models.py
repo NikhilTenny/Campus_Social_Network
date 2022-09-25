@@ -2,24 +2,26 @@ from django.test import TestCase
 from users.models import CustomeUsers, Profile
 from django.contrib.auth.hashers import make_password
 from PIL import Image
+from Admin_area.tests.test_views import TestStudentCreateview
 
 
 
 class TestCustomeUsers(TestCase):
-    def setUp(self):
-        self.password = make_password('fortesting')
-        self.user_details = {
+    @classmethod
+    def setUpTestData(cls):
+        cls.password = make_password('fortesting')
+        cls.user_details = {
             'username' : 'testuser',
             'is_student' : 'True',
             'first_name': 'Test_f',
             'last_name' : 'Test_l',
-            'password' : self.password
+            'password' : cls.password
         }
-        self.user = CustomeUsers.objects.create(**self.user_details) 
-        self.profile_details = {
-            'User' : self.user
+        cls.user = CustomeUsers.objects.create(**cls.user_details) 
+        cls.profile_details = {
+            'User' : cls.user
         }
-        self.profile = Profile.objects.create(**self.profile_details) 
+        cls.profile = Profile.objects.create(**cls.profile_details) 
 
 
     
@@ -35,26 +37,27 @@ class TestCustomeUsers(TestCase):
 
 
 class TestProfile(TestCase):
-    def setUp(self):
-        self.password = make_password('fortesting')
-        self.user_details = {
+    @classmethod
+    def setUpTestData(cls):
+        cls.password = make_password('fortesting')
+        cls.user_details = {
             'username' : 'testuser',
             'is_student' : 'True',
             'first_name': 'Test_f',
             'last_name' : 'Test_l',
-            'password' : self.password
+            'password' : cls.password
         }
-        self.user = CustomeUsers.objects.create(**self.user_details) 
-        self.profile_details = {
-            'User' : self.user
+        cls.user = CustomeUsers.objects.create(**cls.user_details) 
+        cls.profile_details = {
+            'User' : cls.user
         }
-        self.profile = Profile.objects.create(**self.profile_details) 
+        cls.profile = Profile.objects.create(**cls.profile_details) 
 
-    # def test_update_friend_no(self):
-    #     Profile.update_friend_no(self.user)
+    def test_update_friend_no(self):
+        Profile.update_friend_no(self.user)
+        update_prof = Profile.objects.get(User=self.user)
 
-    #     print(self.profile.Friends)
-    #     self.assertEquals(self.profile.Friends, 1) 
+        self.assertEquals(update_prof.Friends, 1) 
 
     def test_image_resolution(self):
         img = Image.open(self.profile.Profile_pic)

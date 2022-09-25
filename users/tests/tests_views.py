@@ -9,22 +9,23 @@ import json
 
 class TestLoginView(TestCase):
 
-    def setUp(self):
-        self.url = reverse('login')
-        self.client = Client()
-        self.password = make_password('fortesting')
-        self.user_details = {
+    @classmethod
+    def setUpTestData(cls):
+        cls.url = reverse('login')
+        cls.client = Client()
+        cls.password = make_password('fortesting')
+        cls.user_details = {
             'username' : 'testuser',
             'is_student' : 'True',
             'first_name': 'Test_f',
             'last_name' : 'Test_l',
-            'password' : self.password
+            'password' : cls.password
         }
-        self.login_credentials = {
+        cls.login_credentials = {
             'username' : 'testuser',
             'password' : 'fortesting'
         }
-        self.user = CustomeUsers.objects.create(**self.user_details) 
+        cls.user = CustomeUsers.objects.create(**cls.user_details) 
 
 
     def test_login_GET(self):
